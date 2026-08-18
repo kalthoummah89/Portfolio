@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Portfolio de Kalthoum Mahjoub, spécialiste en automatisation IA & No-Code à Ariana, Tunisie. Conception de workflows et d'agents intelligents.">
+<meta property="og:title" content="Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code">
+<meta property="og:description" content="Découvrez mes projets d'automatisation d'agents vocaux IA, d'intégration Make/n8n et de workflows métier.">
+<meta property="og:type" content="website">
+<title>Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Script Tally pour le redimensionnement dynamique -->
+<script async src="https://tally.so/widgets/embed.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0A0E17',
+          surface: '#121729',
+          surface2: '#182036',
+          edge: '#242C48',
+          accent: '#8B7CF6',
+          signal: '#F2A94E',
+          ok: '#5EEAD4',
+          ink: '#EEF0F8',
+          muted: '#9EA8C7',
+        },
+        fontFamily: {
+          mono: ['"Space Mono"', 'monospace'],
+          sans: ['Manrope', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background-color: #0A0E17; }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(139,124,246,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(139,124,246,0.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  ::selection { background: #8B7CF6; color: #0A0E17; }
+
+  /* Workflow signature animation */
+  .flow-line { position: relative; }
+  .flow-line::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(to right, #262F4A 0 6px, transparent 6px 12px);
+    transform: translateY(-50%);
+  }
+  .flow-dot {
+    position: absolute;
+    top: 50%; left: 0;
+    width: 8px; height: 8px;
+    margin-top: -4px;
+    border-radius: 9999px;
+    background: #F2A94E;
+    box-shadow: 0 0 12px 2px rgba(242,169,78,0.7);
+    animation: travel 5s linear infinite;
+  }
+  @keyframes travel {
+    0%   { left: 0%;   opacity: 0; }
+    5%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+  .node-pulse {
+    animation: pulseGlow 5s linear infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139,124,246,0); }
+    18%, 26% { box-shadow: 0 0 0 6px rgba(139,124,246,0.15); }
+  }
+  .node-pulse:nth-of-type(2) { animation-delay: .9s; }
+  .node-pulse:nth-of-type(3) { animation-delay: 1.8s; }
+  .node-pulse:nth-of-type(4) { animation-delay: 2.7s; }
+  .node-pulse:nth-of-type(5) { animation-delay: 3.6s; }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .tab-btn[aria-selected="true"] {
+    background: #8B7CF6; color: #0A0E17;
+  }
+  .filter-btn[aria-pressed="true"] {
+    background: #8B7CF6; color: #0A0E17; border-color: #8B7CF6;
+  }
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+  .accordion-content.open { max-height: 900px; }
+  .chevron { transition: transform .3s ease; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .navdot { transition: background-color .3s ease, transform .3s ease; }
+  .navdot.active { background-color: #8B7CF6; transform: scale(1.4); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-dot, .node-pulse { animation: none !important; }
+    .reveal { transition: none; }
+  }
+
+  /* Fix responsive et espacement des badges de compétences */
+  [data-panel] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem !important; /* Espacement fixe garanti */
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-panel].hidden {
+    display: none !important;
+  }
+
+  [data-panel] span {
+    white-space: normal; /* Permet le retour à la ligne du texte trop long sur mobile */
+    word-break: break-word;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* ---------- Responsive layout safeguards ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  img, svg, video, iframe { max-width: 100%; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+
+  @media (max-width: 1023px) {
+    .max-w-6xl { width: 100%; }
+    section { scroll-margin-top: 72px; }
+  }
+
+  @media (max-width: 767px) {
+    .max-w-6xl { width: 100%; }
+
+    section > .max-w-6xl > .grid,
+    section > .max-w-6xl > div > .grid {
+      display: block;
+    }
+
+    section > .max-w-6xl > .grid > p,
+    section > .max-w-6xl > div > .grid > p {
+      margin-bottom: 1.5rem;
+    }
+
+    #profil, #competences, #projets, #experiences, #parcours {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    #contact {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+
+    #hero {
+      padding-top: 7.5rem;
+      padding-bottom: 4rem;
+    }
+
+    #hero h1 {
+      font-size: clamp(2.25rem, 11vw, 3.5rem);
+      overflow-wrap: anywhere;
+    }
+
+    #hero .mt-10 {
+      margin-top: 2rem;
+    }
+
+    #hero a {
+      width: 100%;
+      text-align: center;
+    }
+
+    .flow-line {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+      scrollbar-width: thin;
+    }
+
+    .flow-line::before {
+      min-width: 680px;
+    }
+
+    .flow-line > .relative {
+      min-width: 680px;
+    }
+
+    .flow-line .node-pulse {
+      min-width: 120px;
+    }
+
+    #tabBar, #expFilters {
+      width: 100%;
+    }
+
+    #tabBar .tab-btn,
+    #expFilters .filter-btn {
+      max-width: 100%;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    #projectList > div {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .proj-toggle {
+      min-width: 0;
+      align-items: flex-start;
+    }
+
+    .proj-toggle > div:first-child {
+      min-width: 0;
+    }
+
+    .proj-toggle h3 {
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+
+    #expList {
+      padding-left: 1.5rem;
+      margin-left: 0;
+    }
+
+    #expList .relative {
+      min-width: 0;
+    }
+
+    #expList h3,
+    #expList p {
+      overflow-wrap: anywhere;
+    }
+
+    #contact a,
+    #contact button,
+    #contact p {
+      max-width: 100%;
+      flex-wrap: wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    footer .max-w-6xl {
+      align-items: flex-start;
+    }
+
+    #sidenav { display: none !important; }
+  }
+
+  @media (max-width: 420px) {
+    #hero,
+    #profil, #competences, #projets, #experiences, #parcours, #contact {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    header > div,
+    #mobileMenu {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    #hero .text-lg,
+    #hero .sm\\:text-xl {
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .proj-toggle {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .accordion-content {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* ---------- Project technical stack ---------- */
+  .stack-block {
+    margin: 0 1.25rem 1.25rem;
+    padding: 1rem 1.1rem 1.1rem;
+    border: 1px solid rgba(139,124,246,.22);
+    border-radius: .9rem;
+    background: linear-gradient(135deg, rgba(139,124,246,.08), rgba(18,23,41,.72));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+  }
+
+  .stack-heading {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin-bottom: .7rem;
+    font-family: "Space Mono", monospace;
+    font-size: .65rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #F2A94E;
+  }
+
+  .stack-heading::before {
+    content: "";
+    width: .42rem;
+    height: .42rem;
+    border-radius: 9999px;
+    background: #8B7CF6;
+    box-shadow: 0 0 10px rgba(139,124,246,.7);
+    flex: 0 0 auto;
+  }
+
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+  }
+
+  .stack-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.8rem;
+    padding: .28rem .65rem;
+    border: 1px solid #242C48;
+    border-radius: 9999px;
+    background: rgba(10,14,23,.58);
+    color: #8D96B3;
+    font-family: "Space Mono", monospace;
+    font-size: .65rem;
+    line-height: 1.2;
+    transition: border-color .2s ease, color .2s ease, transform .2s ease;
+  }
+
+  .stack-chip:hover {
+    border-color: #8B7CF6;
+    color: #EEF0F8;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 767px) {
+    .stack-block {
+      margin-left: 1rem;
+      margin-right: 1rem;
+      padding: .9rem;
+    }
+
+    .stack-chip {
+      font-size: .6rem;
+      min-height: 1.7rem;
+    }
+  }
+</style>
+</head>
+<body class="bg-bg text-ink font-sans antialiased">
+
+<!-- Scroll progress bar -->
+<div id="scrollbar" class="fixed top-0 left-0 h-[2px] bg-accent z-50" style="width:0%"></div>
+
+<!-- Side nav dots (desktop) -->
+<nav class="hidden lg:flex flex-col gap-4 fixed right-8 top-1/2 -translate-y-1/2 z-40" id="sidenav">
+  <a href="#hero" data-target="hero" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#profil" data-target="profil" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#competences" data-target="competences" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#projets" data-target="projets" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#experiences" data-target="experiences" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#parcours" data-target="parcours" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#contact" data-target="contact" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+</nav>
+
+<!-- Top bar -->
+<header class="fixed top-0 inset-x-0 z-40 border-b border-edge/60 backdrop-blur bg-bg/70">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+    <span class="font-mono text-sm tracking-wide text-muted">KM<span class="text-accent">.</span>AUTOMATION</span>
+    <button id="menuBtn" class="lg:hidden font-mono text-xs border border-edge rounded px-3 py-1.5 text-muted" aria-expanded="false" aria-controls="mobileMenu" aria-label="Ouvrir le menu de navigation">MENU</button>
+    <div class="hidden lg:flex items-center gap-6 font-mono text-xs text-muted">
+      <a href="#profil" class="hover:text-ink transition-colors">PROFIL</a>
+      <a href="#competences" class="hover:text-ink transition-colors">COMPÉTENCES</a>
+      <a href="#projets" class="hover:text-ink transition-colors">PROJETS</a>
+      <a href="#experiences" class="hover:text-ink transition-colors">EXPÉRIENCES</a>
+      <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="flex items-center gap-1.5 text-signal hover:text-white transition-colors border border-signal/40 hover:border-signal rounded px-3 py-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        CV (PDF)
+      </a>
+      <a href="#contact" class="border border-accent text-accent hover:bg-accent hover:text-bg transition-colors rounded px-3 py-1.5">CONTACT</a>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden flex flex-col gap-1 px-6 pb-4 font-mono text-xs text-muted">
+    <a href="#profil" class="py-2 border-b border-edge/50">PROFIL</a>
+    <a href="#competences" class="py-2 border-b border-edge/50">COMPÉTENCES</a>
+    <a href="#projets" class="py-2 border-b border-edge/50">PROJETS</a>
+    <a href="#experiences" class="py-2 border-b border-edge/50">EXPÉRIENCE</a>
+    <a href="#parcours" class="py-2 border-b border-edge/50">PARCOURS</a>
+    <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="py-2 border-b border-edge/50 text-signal flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      TÉLÉCHARGER MON CV (PDF)
+    </a>
+    <a href="#contact" class="py-2 text-accent">CONTACT</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" class="relative bg-grid pt-40 pb-24 px-6 lg:px-10 border-b border-edge/60 overflow-hidden">
+  <div class="max-w-6xl mx-auto">
+    <p class="font-mono text-xs text-signal tracking-[0.2em] mb-6">DISPONIBLE POUR DE NOUVELLES OPPORTUNITÉS</p>
+    <h1 class="text-4xl sm:text-6xl font-extrabold leading-[1.05] max-w-3xl">
+      Kalthoum Mahjoub<span class="text-accent">.</span>
+    </h1>
+    <p class="mt-4 text-lg sm:text-xl text-muted max-w-2xl">
+      Spécialiste en <span class="text-ink">automatisation IA & no-code</span>. Je conçois des workflows et agents intelligents qui fiabilisent la gestion commerciale et la relation client.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3 font-mono text-xs text-muted">
+      <span class="border border-edge rounded-full px-3 py-1">📍 Ariana, Tunisie</span>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="#projets" class="bg-accent text-bg font-mono text-xs tracking-wide rounded px-5 py-3 hover:bg-white transition-colors">VOIR LES PROJETS</a>
+      <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="border border-signal text-signal hover:bg-signal hover:text-bg transition-colors font-mono text-xs tracking-wide rounded px-5 py-3 flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        TÉLÉCHARGER CV (PDF)
+      </a>
+      <a href="#contact" class="border border-edge rounded px-5 py-3 font-mono text-xs tracking-wide text-ink hover:border-accent transition-colors">ME CONTACTER</a>
+    </div>
+
+    <div class="mt-20 hidden sm:block">
+      <p class="font-mono text-[11px] text-muted mb-6">// WORKFLOW EN PRODUCTION — AGENT VOCAL IA (VAPI, GPT-4.1)</p>
+      <div class="relative flow-line py-8">
+        <div class="flow-dot"></div>
+        <div class="relative flex justify-between text-center">
+          <div class="node-pulse flex-1 px-1">
+            <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
+            <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Appel client</p>
+            <p class="text-[10px] text-muted">NLP</p>
+          </div>
+          <div class="node-pulse flex-1 px-1">
+            <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
+            <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Agent IA</p>
+            <p class="text-[10px] text-muted">anti-hallucination</p>
+          </div>
+          <div class="node-pulse flex-1 px-1">
+            <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
+            <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Webhook</p>
+            <p class="text-[10px] text-muted">Make</p>
+          </div>
+          <div class="node-pulse flex-1 px-1">
+            <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
+            <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Facture + stock</p>
+            <p class="text-[10px] text-muted">Data Store</p>
+          </div>
+          <div class="node-pulse flex-1 px-1">
+            <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-signal"></div>
+            <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Slack notifié</p>
+            <p class="text-[10px] text-signal">~0,36 $/appel</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFIL -->
+<section id="profil" class="px-6 lg:px-10 py-24 border-b border-edge/60">
+  <div class="max-w-6xl mx-auto grid lg:grid-cols-[160px_1fr] gap-8">
+    <p class="font-mono text-xs text-signal tracking-[0.2em]">01 — PROFIL</p>
+    <div class="reveal max-w-3xl">
+      <p class="text-xl sm:text-2xl leading-relaxed text-ink">
+        Spécialisée dans l'automatisation de workflows intelligents dédiés à la gestion commerciale et à la relation client, mon parcours hybride en marketing, en gestion de projets et en développement web me sert de solide appui pour cerner les enjeux business, cadrer les besoins métier et les traduire en solutions techniques fiables et évolutives.
+      </p>
+      <p class="mt-6 text-muted">
+        Objectif clair : optimiser la productivité des équipes et renforcer la satisfaction client.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCES -->
+<section id="competences" class="px-6 lg:px-10 py-24 border-b border-edge/60 bg-surface/40">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">02 — COMPÉTENCES</p>
+      <div class="reveal w-full min-w-0">
+        <div id="tabBar" class="flex flex-wrap gap-2.5 mb-8 font-mono text-xs">
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="nocode" aria-selected="true">Automation</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="ia" aria-selected="false">Agentic IA / LLMs</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="dev" aria-selected="false">Dev Web (MERN)</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="pm" aria-selected="false">Gestion & Marketing</button>
+        </div>
+
+        <div id="tabPanels" class="w-full">
+          <div data-panel="nocode"></div>
+          <div data-panel="ia" class="hidden"></div>
+          <div data-panel="dev" class="hidden"></div>
+          <div data-panel="pm" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets" class="px-6 lg:px-10 py-24 border-b border-edge/60">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">03 — PROJETS D'AUTOMATISATION</p>
+      <div class="reveal space-y-4" id="projectList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experiences" class="px-6 lg:px-10 py-24 border-b border-edge/60 bg-surface/40">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">04 — EXPÉRIENCES</p>
+      <div class="reveal">
+        <div class="flex flex-wrap gap-2 mb-10 font-mono text-xs" id="expFilters">
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="all" aria-pressed="true">Tout</button>
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="dev" aria-pressed="false">Développement Web & Gestion de Projets</button>
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="marketing" aria-pressed="false">Marketing et Développement Commercial</button>
+        </div>
+        <div id="expList" class="space-y-8 border-l border-edge pl-8"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARCOURS -->
+<section id="parcours" class="px-6 lg:px-10 py-24 border-b border-edge/60">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">05 — PARCOURS</p>
+      <div class="reveal grid md:grid-cols-2 gap-12">
+        <div>
+          <h3 class="font-mono text-sm text-ink mb-5">CERTIFICATIONS</h3>
+          <ul class="space-y-4 text-sm text-muted">
+            <li><span class="text-ink">Make (Partners / Academy)</span> — du niveau 1 à 5, Expert · AI Agent Builder & AI Automation Explorer</li>
+            <li><span class="text-ink">Dubai Future Foundation</span> — One Million Prompters</li>
+            <li><span class="text-ink">Microsoft</span> — Préparer votre carrière dans l'IA générative · Améliorez votre productivité grâce à l'IA générative</li>
+            <li><span class="text-ink">ESSEC Business School</span> — Négociation internationale et interculturelle</li>
+            <li><span class="text-ink">Google</span> — Foundations of UX Design, Build Wireframes and Low-Fidelity Prototypes, Start the UX Design Process, Fundamentals of Digital Marketing</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-mono text-sm text-ink mb-5">ÉDUCATION</h3>
+          <ul class="space-y-4 text-sm text-muted">
+            <li><span class="text-ink">Orange Digital Center, GIZ & TEK-UP University</span> — Développement Web Full-Stack <span class="text-muted">(2022)</span></li>
+            <li>
+              <span class="text-ink">Faculté des sciences économiques et de gestion de Tunis (FSEGT)</span>
+              <ul class="mt-2 ml-4 space-y-1 list-disc list-inside">
+                <li>Doctorat en Marketing (2015 – 2022) — parcours suspendu suite à une reconversion professionnelle</li>
+                <li>Mastère de recherche en Marketing (2015)</li>
+                <li>Licence appliquée en Marketing (2011)</li>
+              </ul>
+            </li>
+            <li><span class="text-ink">Lycée Menzah VI</span> — Baccalauréat en informatique <span class="text-muted">(2008)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="px-6 lg:px-10 py-28 border-b border-edge/60">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">06 — CONTACT</p>
+      <div class="reveal">
+        <h2 class="text-3xl sm:text-5xl font-extrabold max-w-2xl leading-tight mb-8">
+          Discutons de votre prochain workflow.
+        </h2>
+
+        <!-- Formulaire Tally -->
+        <div class="w-full max-w-2xl border border-edge rounded-2xl p-4 sm:p-6 bg-surface/50">
+          <iframe 
+            id="tally-iframe"
+            data-tally-src="https://tally.so/embed/68628J?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+            loading="lazy" 
+            width="100%" 
+            height="552" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0" 
+            title="Formulaire De Contact">
+          </iframe>
+          <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+        </div>
+
+        <!-- Coordonnées directes -->
+        <div class="mt-10 flex flex-wrap gap-6 font-mono text-xs text-muted">
+          <button id="copyEmail" type="button" class="flex items-center gap-2 group" aria-label="Copier l’adresse e-mail">
+            <span>Email :</span>
+            <span class="text-ink border-b border-dashed border-edge group-hover:border-accent transition-colors">mahjoub.kalthoum@gmail.com</span>
+            <span id="copyStatus" class="text-signal opacity-0 transition-opacity" role="status" aria-live="polite">copié ✓</span>
+          </button>
+          <a href="tel:+21648154126" class="flex items-center gap-2">
+            <span>Tél :</span>
+            <span class="text-ink border-b border-dashed border-edge">+216 48 154 126</span>
+          </a>
+          <a href="https://linkedin.com/in/kalthoum-mahjoub89" target="_blank" rel="noopener" class="flex items-center gap-2">
+            <span>LinkedIn :</span>
+            <span class="text-ink border-b border-dashed border-edge hover:border-accent transition-colors">kalthoum-mahjoub89</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="px-6 lg:px-10 py-8 border-t border-edge/60">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between gap-2 font-mono text-[11px] text-muted">
+    <span>© Kalthoum Mahjoub</span>
+    <span>Automatisation IA & No-Code — Ariana, Tunisie</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- Data ----------
+  const skills = {
+    nocode: ["Workflow Automation","Make","n8n","Marketing Automation","Intégration d'API REST et Webhooks","Authentification API (API Key · Bearer Token · OAuth 2.0)","Méthodes HTTP","Gestion des erreurs et logique conditionnelle","JSON Parsing","Data Wrangling","Data Lookups","Data Mapping"],
+    ia: ["IA générative","Conception, orchestration et tests d'agents IA","Agents vocaux IA (Vapi)","Intégration de LLMs","Prompt et Context Engineering","Function Calling / Tool Calling","Structured Output","Intégration MCP (Model Context Protocol)","Intégration de bases de connaissances","Guardrails et sécurisation des données"],
+    dev: ["React.js","Node.js","Express.js","MongoDB","JavaScript","HTML5","CSS3","TypeScript","Tailwind CSS","Bootstrap","Responsive Design","UX Design","Conception d'API REST","Tests d'API (Thunder Client · Postman)"],
+    pm: ["Analyse Technique","Étude de marché","Analyse SWOT et concurrentielle","Benchmark digital","Stratégie et planification marketing","Business Model Canvas","Rédaction de cahier des charges fonctionnel (CdCF)","Modélisation UML","Planification stratégique","Gestion de la relation client (CRM)"]
+  };
+
+  const projects = [
+    {
+      title: "Agent vocal IA (Vapi, GPT-4.1) disponible 24h/24",
+      tag: "Certification Make",
+      metric: "~0,36 $/appel",
+      stack: ["Vapi","GPT-4.1","Make.com","Webhooks","Tool / Function Calling","JSON","Google Sheets","Google Docs","Slack","Make Data Store"],
+      bullets: [
+        "Prompt sécurisé anti-hallucination et tool/function calling : traitement des commandes en langage naturel (NLP), consultation de la base de connaissances, validation/transmission des données via webhook.",
+        "Workflow Make : réception des commandes, mise à jour stock, génération automatique de factures, stockage des données (Data Store Make), notifications Slack du service commercial.",
+        "Bénéfices : traçabilité complète, délais de saisie et erreurs manuelles réduits."
+      ]
+    },
+    {
+      title: "Système de recouvrement client automatisé",
+      tag: "CRM Airtable",
+      metric: "< 40 crédits/exécution",
+      stack: ["Make.com","Airtable","Gmail","Webhooks","Routage","Logique conditionnelle","HTML/CSS","Aggregators"],
+      bullets: [
+        "Détection quotidienne des impayés et mails de relance personnalisés par palier de retard.",
+        "Sécurisation de l'accès aux factures au clic via Webhook et mise à jour automatique du CRM Airtable.",
+        "Bénéfices : communication adaptative, traçabilité totale, gain de temps commercial."
+      ]
+    },
+    {
+      title: "Restructuration et normalisation dynamique de données scolaires",
+      tag: "Certification Make — Niveau 5 Expert",
+      metric: "< 50 crédits/exécution",
+      stack: ["Make.com","API REST","HTTP","Authentification API","SHA","JSON","Routers","Iterators","Aggregators","HTML/CSS","Gmail"],
+      bullets: [
+        "Reconstitution du mécanisme d'authentification d'une API non documentée (paramètre caché, mot de passe haché SHA) par reverse engineering.",
+        "Nettoyage, normalisation et restructuration dynamique des données, envoi automatique de reporting étudiants par e-mail (HTML/CSS)."
+      ]
+    },
+    {
+      title: "Automatisation du reporting météo et gestion d'erreurs API",
+      tag: "Certification Make — Niveau 4 Advanced",
+      metric: "< 30 crédits/exécution",
+      stack: ["Make.com","API REST","Error Handling (Sleep / Resume)","Logique conditionnelle","Routers","Iterators / Aggregators","JSON","Gmail"],
+      bullets: [
+        "Intégration de deux API REST (météo, jours fériés) : formatage et calculs statistiques des données, envoi automatique d'un reporting météo par e-mail (agrégation en fichier JSON attaché).",
+        "Gestion des erreurs API (HTTP 429, rate-limiting) : reprise automatique via Sleep (10s) et Resume."
+      ]
+    },
+    {
+      title: "Automatisation de campagne d'e-mailing marketing sur-mesure",
+      tag: "Marketing Automation · Make",
+      metric: "< 40 crédits/exécution",
+      stack: ["Gmail","Airtable","Webhooks","Tailwind CSS","HTML","JavaScript","Webhook Response"],
+      bullets: [
+        "Détection quotidienne des anniversaires dans Airtable, contrôle anti-doublon et génération automatique d'un coupon unique, enregistré dans le CRM pour assurer la traçabilité de chaque offre.",
+        "Envoi d'un e-mail HTML personnalisé avec lien sécurisé vers une landing page générée à la demande via Webhook, sans hébergement ni stockage de page côté Make.",
+        "Bénéfices : parcours de fidélisation autonome, expérience client personnalisée, réduction de la charge opérationnelle et suivi CRM en temps réel."
+      ]
+    }
+  ];
+
+  const experiences = [
+    { cat:"dev", company:"TotalEnergies", role:"Initiative Entrepreneuriale (Entrepreneuriat)", date:"Juin 2024 – Octobre 2024", desc:"Étude de projet et développement MVP d'une application « Mindy Up », de gestion de la santé mentale en stack MERN, classée parmi les TOP 100 des meilleurs projets en Tunisie au Challenge Startupper de l'Année, organisé par TotalEnergies." },
+    { cat:"dev", company:"Clediss", role:"Développeuse Web (Stage)", date:"Février 2023 – Mai 2023", desc:"Benchmark fonctionnel (3 solutions concurrentes) et conception d'une application de gestion de caisse enregistreuse pour restaurants avec la pile MERN (design validé à 97%, développement partiel)." },
+    { cat:"dev", company:"Orange Developer Center & GIZ", role:"Développeuse Web MERN (Stage)", date:"Février 2022 – Août 2022", desc:"Étude fonctionnelle et développement collaboratif de « Ticketto », plateforme de billetterie événementielle en MERN Stack." },
+    { cat:"marketing", company:"Mega Numérique", role:"Assistante Manager (Freelance)", date:"Octobre 2019 – Septembre 2021", desc:"Suivi de la chaîne de production, gestion des commandes, des livraisons et de la logistique PLV avec un taux de livraison à temps de 98%." },
+    { cat:"marketing", company:"Linea Concept", role:"Assistante De Production (Stage)", date:"Mai 2019 – Août 2019", desc:"Pilotage de la logistique de production : coordination des plannings, sélection du casting (+10 figurants) et suivi matériel sur 4 lieux de tournage pour la campagne publicitaire « Tounessna » (BIAT)." },
+    { cat:"marketing", company:"Teleperformance", role:"Téléconseillère (SIVP)", date:"Avril 2015 – Juillet 2015", desc:"Optimisation de la gestion des réclamations contribuant à l'amélioration de la satisfaction (10 à 12 %) et fidélisation client." },
+    { cat:"marketing", company:"Mega Numérique", role:"Assistante Marketing (Stage)", date:"Juin 2013 – Septembre 2013", desc:"Déploiement d'actions de prospection ciblées, contribuant activement au développement du portefeuille clients et commercial (+10 % de prospects qualifiés)." },
+    { cat:"marketing", company:"Tunisie Telecom", role:"Assistante Marketing (Stage)", date:"Mars 2011 – Avril 2011", desc:"Planification et conception d'une action promotionnelle spéciale fête des Mères, validée et déployée dans les TT Shops." }
+  ];
+
+  // ---------- Render skills ----------
+  Object.entries(skills).forEach(([key, list]) => {
+    const panel = document.querySelector(`[data-panel="${key}"]`);
+    panel.innerHTML = list.map(s => `<span class="font-mono text-xs border border-edge rounded-full px-3.5 py-2 text-muted hover:border-accent hover:text-ink transition-colors">${s}</span>`).join('');
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+
+      document.querySelectorAll('[data-panel]').forEach(p => p.classList.add('hidden'));
+      const activePanel = document.querySelector(`[data-panel="${btn.dataset.tab}"]`);
+      activePanel.classList.remove('hidden');
+    });
+  });
+
+  // ---------- Render projects (accordion) ----------
+  const projectList = document.getElementById('projectList');
+  projectList.innerHTML = projects.map((p, i) => `
+    <div class="border border-edge rounded-xl overflow-hidden bg-surface/60">
+      <button class="proj-toggle w-full flex items-center justify-between gap-4 px-5 py-5 text-left" data-index="${i}">
+        <div>
+          <p class="font-mono text-[10px] text-signal mb-1">${p.tag}</p>
+          <h3 class="text-base sm:text-lg text-ink font-semibold">${p.title}</h3>
+        </div>
+        <div class="flex items-center gap-4 shrink-0">
+          <span class="hidden sm:inline font-mono text-xs text-ok border border-ok/30 rounded-full px-3 py-1">${p.metric}</span>
+          <svg class="chevron w-4 h-4 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </button>
+      <div class="accordion-content px-5">
+        <ul class="pb-5 space-y-2 text-sm text-muted list-disc list-inside">
+          ${p.bullets.map(b => `<li>${b}</li>`).join('')}
+        </ul>
+        <div class="stack-block">
+          <div class="stack-heading">Stack technique</div>
+          <div class="stack-list">
+            ${p.stack.map(s => `<span class="stack-chip">${s}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.proj-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling;
+      const chevron = btn.querySelector('.chevron');
+      content.classList.toggle('open');
+      chevron.classList.toggle('open');
+    });
+  });
+
+  // ---------- Render experience (filterable) ----------
+  const expList = document.getElementById('expList');
+  const catLabels = {
+    dev: "DÉVELOPPEMENT WEB & GESTION DE PROJETS",
+    marketing: "MARKETING ET DÉVELOPPEMENT COMMERCIAL"
+  };
+
+  function itemHtml(e) {
+    return `
+      <div class="relative">
+        <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full ${e.cat === 'dev' ? 'bg-accent' : 'bg-signal'}"></span>
+        <p class="font-mono text-[11px] text-muted mb-1">${e.date}</p>
+        <h3 class="text-ink font-semibold">${e.company} <span class="text-muted font-normal">— ${e.role}</span></h3>
+        <p class="mt-2 text-sm text-muted max-w-2xl">${e.desc}</p>
+      </div>
+    `;
+  }
+
+  function renderExp(filter) {
+    if (filter === 'all') {
+      const cats = ['dev', 'marketing'];
+      expList.innerHTML = cats.map(cat => `
+        <div>
+          <p class="font-mono text-[11px] tracking-[0.15em] mb-6 ${cat === 'dev' ? 'text-accent' : 'text-signal'}">~ ${catLabels[cat]} ~</p>
+          <div class="space-y-8">
+            ${experiences.filter(e => e.cat === cat).map(itemHtml).join('')}
+          </div>
+        </div>
+      `).join('<div class="h-2"></div>');
+    } else {
+      expList.innerHTML = `
+        <p class="font-mono text-[11px] tracking-[0.15em] mb-6 ${filter === 'dev' ? 'text-accent' : 'text-signal'}">~ ${catLabels[filter]} ~</p>
+        <div class="space-y-8">
+          ${experiences.filter(e => e.cat === filter).map(itemHtml).join('')}
+        </div>
+      `;
+    }
+  }
+  renderExp('all');
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      renderExp(btn.dataset.filter);
+    });
+  });
+
+  // ---------- Mobile menu ----------
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+    menuBtn.setAttribute('aria-label', isOpen ? 'Ouvrir le menu de navigation' : 'Fermer le menu de navigation');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
+  }));
+
+  // ---------- Copy email ----------
+  const copyBtn = document.getElementById('copyEmail');
+  const copyStatus = document.getElementById('copyStatus');
+  copyBtn.addEventListener('click', async () => {
+    const email = 'mahjoub.kalthoum@gmail.com';
+    try {
+      if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(email);
+      copyStatus.textContent = 'copié ✓';
+      copyStatus.classList.remove('text-red-400');
+      copyStatus.classList.add('text-signal');
+    } catch (e) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = email;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        const copied = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (!copied) throw new Error('Fallback copy failed');
+        copyStatus.textContent = 'copié ✓';
+        copyStatus.classList.remove('text-red-400');
+        copyStatus.classList.add('text-signal');
+      } catch (fallbackError) {
+        copyStatus.textContent = 'Copie indisponible — sélectionnez l’e-mail';
+        copyStatus.classList.remove('text-signal');
+        copyStatus.classList.add('text-red-400');
+      }
+    }
+    copyStatus.style.opacity = 1;
+    setTimeout(() => copyStatus.style.opacity = 0, 2500);
+  });
+
+  // ---------- Scroll progress + active nav dot ----------
+  const scrollbar = document.getElementById('scrollbar');
+  const sections = ['hero','profil','competences','projets','experiences','parcours','contact'].map(id => document.getElementById(id));
+  const dots = document.querySelectorAll('.navdot');
+
+  function onScroll() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    scrollbar.style.width = pct + '%';
+
+    let current = sections[0].id;
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - window.innerHeight * 0.4) current = sec.id;
+    });
+    dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+  }
+  document.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // ---------- Reveal on scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Réinitialisation automatique du formulaire Tally après soumission (4 secondes)
+  window.addEventListener('message', (event) => {
+    if (event.data && typeof event.data === 'string') {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.event === 'Tally.FormSubmitted') {
+          setTimeout(() => {
+            const iframe = document.getElementById('tally-iframe');
+            if (iframe) {
+              iframe.src = iframe.getAttribute('data-tally-src') || iframe.src;
+            }
+          }, 4000);
+        }
+      } catch (e) {}
+    }
+  });
+</script>
+</body>
+</html>

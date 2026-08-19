@@ -7,6 +7,15 @@
 <meta property="og:title" content="Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code">
 <meta property="og:description" content="Découvrez mes projets d'automatisation d'agents vocaux IA, d'intégration Make/n8n et de workflows métier.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://kalthoummah89.github.io/Portfolio/">
+<meta property="og:image" content="https://kalthoummah89.github.io/Portfolio/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code">
+<meta name="twitter:description" content="Découvrez mes projets d'automatisation d'agents vocaux IA, d'intégration Make/n8n et de workflows métier.">
+<meta name="twitter:image" content="https://kalthoummah89.github.io/Portfolio/og-image.jpg">
 <title>Kalthoum Mahjoub — Spécialiste en Automatisation IA & No-Code</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,8 +105,8 @@
   .filter-btn[aria-pressed="true"] {
     background: #8B7CF6; color: #0A0E17; border-color: #8B7CF6;
   }
-  .accordion-content { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
-  .accordion-content.open { max-height: 900px; }
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(0, 1, 0, 1); }
+  .accordion-content.open { max-height: 4000px; transition: max-height 1s ease-in-out; }
   .chevron { transition: transform .3s ease; }
   .chevron.open { transform: rotate(180deg); }
 
@@ -113,7 +122,7 @@
   [data-panel] {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.65rem !important; /* Espacement fixe garanti */
+    gap: 0.65rem !important;
     width: 100%;
     max-width: 100%;
   }
@@ -123,7 +132,7 @@
   }
 
   [data-panel] span {
-    white-space: normal; /* Permet le retour à la ligne du texte trop long sur mobile */
+    white-space: normal;
     word-break: break-word;
     text-align: center;
     line-height: 1.3;
@@ -295,7 +304,7 @@
 
   /* ---------- Project technical stack ---------- */
   .stack-block {
-    margin: 0 1.25rem 1.25rem;
+    margin: 0 0 1.25rem;
     padding: 1rem 1.1rem 1.1rem;
     border: 1px solid rgba(139,124,246,.22);
     border-radius: .9rem;
@@ -354,8 +363,6 @@
 
   @media (max-width: 767px) {
     .stack-block {
-      margin-left: 1rem;
-      margin-right: 1rem;
       padding: .9rem;
     }
 
@@ -368,8 +375,50 @@
 </head>
 <body class="bg-bg text-ink font-sans antialiased">
 
+<!-- Pop-up Carrousel (Lightbox) -->
+<div id="carouselModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300" onclick="closeCarouselModal()">
+  <div class="relative max-w-5xl w-full max-h-[90vh] bg-surface border border-edge rounded-2xl p-6 flex flex-col items-center justify-center shadow-2xl" onclick="event.stopPropagation()">
+    
+    <!-- Bouton de fermeture -->
+    <button onclick="closeCarouselModal()" class="absolute top-4 right-4 text-white hover:text-accent font-mono text-xs flex items-center gap-1.5 bg-surface2 px-3 py-1.5 rounded border border-edge transition-colors z-30">
+      ✕ FERMER
+    </button>
+
+    <!-- Titre du projet dans la modale -->
+    <h3 id="modalProjectTitle" class="font-mono text-xs text-signal tracking-wide mb-4 text-center pr-16 pl-4"></h3>
+
+    <!-- Conteneur d'images du carrousel -->
+    <div class="relative w-full overflow-hidden rounded-lg bg-black/60 border border-edge min-h-[300px] sm:min-h-[420px] flex items-center justify-center p-2">
+      <div id="modalSlidesContainer" class="relative w-full h-[320px] sm:h-[450px] flex items-center justify-center">
+        <!-- Les slides seront injectées dynamiquement ici -->
+      </div>
+
+      <!-- Boutons de navigation Flèches -->
+      <button id="modalPrevBtn" onclick="modalMoveSlide(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-surface2/90 hover:bg-accent hover:text-bg text-white p-2.5 rounded-full border border-edge transition-colors shadow-lg" aria-label="Image précédente">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button id="modalNextBtn" onclick="modalMoveSlide(1)" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-surface2/90 hover:bg-accent hover:text-bg text-white p-2.5 rounded-full border border-edge transition-colors shadow-lg" aria-label="Image suivante">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <!-- Indicateurs de bas de modale (Points & Compteur) -->
+    <div class="mt-4 w-full flex items-center justify-between px-2">
+      <span class="font-mono text-xs text-muted" id="modalCounter">1 / 1</span>
+      <div class="flex items-center gap-1.5" id="modalDotsContainer"></div>
+      <span class="font-mono text-[11px] text-accent">Mode Carrousel Plein Écran</span>
+    </div>
+
+  </div>
+</div>
+
 <!-- Scroll progress bar -->
 <div id="scrollbar" class="fixed top-0 left-0 h-[2px] bg-accent z-50" style="width:0%"></div>
+
+<!-- Bouton retour en haut -->
+<button id="backToTop" aria-label="Remonter en haut de page" class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-surface2 border border-edge text-ink hover:bg-accent hover:text-bg hover:border-accent transition-all duration-300 flex items-center justify-center shadow-lg opacity-0 translate-y-3 pointer-events-none">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
 
 <!-- Side nav dots (desktop) -->
 <nav class="hidden lg:flex flex-col gap-4 fixed right-8 top-1/2 -translate-y-1/2 z-40" id="sidenav">
@@ -416,16 +465,27 @@
 <!-- HERO -->
 <section id="hero" class="relative bg-grid pt-40 pb-24 px-6 lg:px-10 border-b border-edge/60 overflow-hidden">
   <div class="max-w-6xl mx-auto">
-    <p class="font-mono text-xs text-signal tracking-[0.2em] mb-6">DISPONIBLE POUR DE NOUVELLES OPPORTUNITÉS</p>
-    <h1 class="text-4xl sm:text-6xl font-extrabold leading-[1.05] max-w-3xl">
-      Kalthoum Mahjoub<span class="text-accent">.</span>
-    </h1>
-    <p class="mt-4 text-lg sm:text-xl text-muted max-w-2xl">
-      Spécialiste en <span class="text-ink">automatisation IA & no-code</span>. Je conçois des workflows et agents intelligents qui fiabilisent la gestion commerciale et la relation client.
-    </p>
+    <div class="flex flex-col-reverse sm:flex-row sm:items-center gap-8 sm:gap-10">
+      <div class="flex-1 min-w-0">
+        <p class="font-mono text-xs text-signal tracking-[0.2em] mb-6">DISPONIBLE POUR DE NOUVELLES OPPORTUNITÉS</p>
+        <h1 class="text-4xl sm:text-6xl font-extrabold leading-[1.05] max-w-3xl">
+          Kalthoum Mahjoub<span class="text-accent">.</span>
+        </h1>
+        <p class="mt-4 text-lg sm:text-xl text-muted max-w-2xl">
+          Spécialiste en <span class="text-ink">automatisation IA & no-code</span>. Je conçois des workflows et agents intelligents qui fiabilisent la gestion commerciale et la relation client.
+        </p>
 
-    <div class="mt-6 flex flex-wrap gap-3 font-mono text-xs text-muted">
-      <span class="border border-edge rounded-full px-3 py-1">📍 Ariana, Tunisie</span>
+        <div class="mt-6 flex flex-wrap gap-3 font-mono text-xs text-muted">
+          <span class="border border-edge rounded-full px-3 py-1">📍 Ariana, Tunisie</span>
+        </div>
+      </div>
+
+      <div class="shrink-0 flex justify-center sm:justify-end">
+        <div class="relative w-32 h-32 sm:w-44 sm:h-44">
+          <div class="absolute inset-0 rounded-full bg-accent/25 blur-2xl"></div>
+          <img src="assets/profil.png" alt="Portrait de Kalthoum Mahjoub" class="relative w-full h-full rounded-full object-cover border-2 border-accent/50 shadow-2xl">
+        </div>
+      </div>
     </div>
 
     <div class="mt-10 flex flex-wrap gap-4">
@@ -638,62 +698,81 @@
     pm: ["Analyse Technique","Étude de marché","Analyse SWOT et concurrentielle","Benchmark digital","Stratégie et planification marketing","Business Model Canvas","Rédaction de cahier des charges fonctionnel (CdCF)","Modélisation UML","Planification stratégique","Gestion de la relation client (CRM)"]
   };
 
-  const projects = [
-    {
-      title: "Agent vocal IA (Vapi, GPT-4.1) disponible 24h/24",
-      tag: "Certification Make",
-      metric: "~0,36 $/appel",
-      stack: ["Vapi","GPT-4.1","Make.com","Webhooks","Tool / Function Calling","JSON","Google Sheets","Google Docs","Slack","Make Data Store"],
-      bullets: [
-        "Prompt sécurisé anti-hallucination et tool/function calling : traitement des commandes en langage naturel (NLP), consultation de la base de connaissances, validation/transmission des données via webhook.",
-        "Workflow Make : réception des commandes, mise à jour stock, génération automatique de factures, stockage des données (Data Store Make), notifications Slack du service commercial.",
-        "Bénéfices : traçabilité complète, délais de saisie et erreurs manuelles réduits."
-      ]
-    },
-    {
-      title: "Système de recouvrement client automatisé",
-      tag: "CRM Airtable",
-      metric: "< 40 crédits/exécution",
-      stack: ["Make.com","Airtable","Gmail","Webhooks","Routage","Logique conditionnelle","HTML/CSS","Aggregators"],
-      bullets: [
-        "Détection quotidienne des impayés et mails de relance personnalisés par palier de retard.",
-        "Sécurisation de l'accès aux factures au clic via Webhook et mise à jour automatique du CRM Airtable.",
-        "Bénéfices : communication adaptative, traçabilité totale, gain de temps commercial."
-      ]
-    },
-    {
-      title: "Restructuration et normalisation dynamique de données scolaires",
-      tag: "Certification Make — Niveau 5 Expert",
-      metric: "< 50 crédits/exécution",
-      stack: ["Make.com","API REST","HTTP","Authentification API","SHA","JSON","Routers","Iterators","Aggregators","HTML/CSS","Gmail"],
-      bullets: [
-        "Reconstitution du mécanisme d'authentification d'une API non documentée (paramètre caché, mot de passe haché SHA) par reverse engineering.",
-        "Nettoyage, normalisation et restructuration dynamique des données, envoi automatique de reporting étudiants par e-mail (HTML/CSS)."
-      ]
-    },
-    {
-      title: "Automatisation du reporting météo et gestion d'erreurs API",
-      tag: "Certification Make — Niveau 4 Advanced",
-      metric: "< 30 crédits/exécution",
-      stack: ["Make.com","API REST","Error Handling (Sleep / Resume)","Logique conditionnelle","Routers","Iterators / Aggregators","JSON","Gmail"],
-      bullets: [
-        "Intégration de deux API REST (météo, jours fériés) : formatage et calculs statistiques des données, envoi automatique d'un reporting météo par e-mail (agrégation en fichier JSON attaché).",
-        "Gestion des erreurs API (HTTP 429, rate-limiting) : reprise automatique via Sleep (10s) et Resume."
-      ]
-    },
-    {
-      title: "Automatisation de campagne d'e-mailing marketing sur-mesure",
-      tag: "Marketing Automation · Make",
-      metric: "< 40 crédits/exécution",
-      stack: ["Gmail","Airtable","Webhooks","Tailwind CSS","HTML","JavaScript","Webhook Response"],
-      bullets: [
-        "Détection quotidienne des anniversaires dans Airtable, contrôle anti-doublon et génération automatique d'un coupon unique, enregistré dans le CRM pour assurer la traçabilité de chaque offre.",
-        "Envoi d'un e-mail HTML personnalisé avec lien sécurisé vers une landing page générée à la demande via Webhook, sans hébergement ni stockage de page côté Make.",
-        "Bénéfices : parcours de fidélisation autonome, expérience client personnalisée, réduction de la charge opérationnelle et suivi CRM en temps réel."
-      ]
-    }
-  ];
-
+ const projects = [
+  {
+    "title": "Agent vocal IA (Vapi) de prise de commande",
+    "tag": "Certification Make",
+    "metric": "~0,36 $/appel",
+    "images": [
+      "projet001.jpg"
+    ],
+    "videos": [],
+    "stack": ["Vapi", "GPT-4.1", "Make.com", "Google Sheets", "Slack", "Webhooks"],
+    "bullets": [
+      "Agent vocal intelligent capable de comprendre le langage naturel, de vérifier la disponibilité des produits, de prendre des commandes en temps réel et de les transférer au back-office sans intervention humaine.",
+      "Stockage des commandes dans la base de données, génération automatique de factures à partir d'un template, mise à jour instantanée des stocks et alerte en direct de l'équipe commerciale sur Slack dès qu'une vente est réalisée.",
+      "Bénéfices : Service client disponible 24/24, zéro erreur de saisie, coûts d'assistance réduits et gain de temps commercial"
+    ]
+  },
+  {
+    "title": "Système de Recouvrement Client Automatisé",
+    "tag": "CRM Airtable",
+    "metric": "< 40 crédits/exécution",
+    "images": [
+      "Système de Recouvrement Client Automatisé — Relance Factures Impayées par Palier de Retard.jpg"
+    ],
+    "videos": [],
+    "stack": ["Make.com", "Airtable", "Gmail", "Webhooks", "Routage", "Logique conditionnelle", "HTML/CSS", "Aggregators"],
+    "bullets": [
+      "Détection quotidienne des impayés et envoi automatique de mails de relance personnalisés par palier de retard.",
+      "Accès instantané du client aux factures en un clic et synchronisation automatique du suivi dans le CRM.",
+      "Bénéfices : communication adaptative, traçabilité totale, gain de temps commercial, et réduction du délai moyen de paiement (DSO)."
+    ]
+  },
+  {
+    "title": "Restructuration et normalisation dynamique de données scolaires",
+    "tag": "Certification Make — Niveau 5 Expert",
+    "metric": "< 50 crédits/exécution",
+    "images": [
+      "Restructuration et normalisation dynamique de données scolaires avec authentification API — Certification Make Partners (Niveau 5 Expert) 🎓.jpg"
+    ],
+    "videos": [],
+    "stack": ["Make.com", "Intégration API REST", "Automatisations Avancées", "Gmail", "HTML/CSS"],
+    "bullets": [
+      "Reconstitution du mécanisme d'authentification d'une API non documentée par reverse engineering.",
+      "Nettoyage, structuration et transformation automatique de données complexes brutes en rapports visuels et clairs, envoyés directement par e-mail aux équipes encadrantes.",
+      "Bénéfices : suppression totale de la saisie manuelle, intégrité des données et accès instantané à des tableaux de bord fiables."
+    ]
+  },
+  {
+    "title": "Automatisation du Reporting Météo & Résilience des Flux de Données",
+    "tag": "Certification Make — Niveau 4 Advanced",
+    "metric": "< 30 crédits/exécution",
+    "images": [
+      "Automatisation du Reporting Météo & Gestion d’Erreurs API - Certification Make Partners (Niveau 4 Advanced) 🎓.jpg"
+    ],
+    "videos": [],
+    "stack": ["Make.com", "API REST", "Gestion d'erreurs avancée", "JSON", "Gmail"],
+    "bullets": [
+      "Agrégation dynamique de données issues de multiples sources externes pour générer et envoyer un rapport météorologique mensuel synthétique.",
+      "Architecture autoréparable : le système détecte seul les pannes ou ralentissements des services tiers et réessaie automatiquement sans interrompre l'activité.",
+      "Bénéfices : Garantie d'un service 100 % disponible, données toujours à jour et zéro maintenance au quotidien."
+    ]
+  },
+  {
+    "title": "Campagnes d'E-mailing Automatisées & Fidélisation Client",
+    "tag": "Marketing Automation · Make",
+    "metric": "< 40 crédits/exécution",
+    "images": [],
+    "videos": [],
+    "stack": ["Gmail", "Airtable", "Webhooks", "Tailwind CSS", "JavaScript"],
+    "bullets": [
+      "Envoi d'offres promotionnelles personnalisées pour les anniversaires clients avec création dynamique de coupons uniques et anticlonage.",
+      "Génération instantanée d'une page web d'atterrissage (Landing Page) personnalisée et festive au clic, sans nécessiter d'hébergement web coûteux.",
+      "Bénéfices : Augmentation du taux de conversion, fidélisation client boostée et campagne 100 % autonome."
+    ]
+  }
+];
   const experiences = [
     { cat:"dev", company:"TotalEnergies", role:"Initiative Entrepreneuriale (Entrepreneuriat)", date:"Juin 2024 – Octobre 2024", desc:"Étude de projet et développement MVP d'une application « Mindy Up », de gestion de la santé mentale en stack MERN, classée parmi les TOP 100 des meilleurs projets en Tunisie au Challenge Startupper de l'Année, organisé par TotalEnergies." },
     { cat:"dev", company:"Clediss", role:"Développeuse Web (Stage)", date:"Février 2023 – Mai 2023", desc:"Benchmark fonctionnel (3 solutions concurrentes) et conception d'une application de gestion de caisse enregistreuse pour restaurants avec la pile MERN (design validé à 97%, développement partiel)." },
@@ -722,11 +801,11 @@
     });
   });
 
-  // ---------- Render projects (accordion) ----------
+  // ---------- Render projects (Accordion + CTA pop-up carousel) ----------
   const projectList = document.getElementById('projectList');
   projectList.innerHTML = projects.map((p, i) => `
     <div class="border border-edge rounded-xl overflow-hidden bg-surface/60">
-      <button class="proj-toggle w-full flex items-center justify-between gap-4 px-5 py-5 text-left" data-index="${i}">
+      <button class="proj-toggle w-full flex items-center justify-between gap-4 px-5 py-5 text-left" data-index="${i}" aria-expanded="false" aria-controls="proj-content-${i}">
         <div>
           <p class="font-mono text-[10px] text-signal mb-1">${p.tag}</p>
           <h3 class="text-base sm:text-lg text-ink font-semibold">${p.title}</h3>
@@ -736,7 +815,18 @@
           <svg class="chevron w-4 h-4 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </button>
-      <div class="accordion-content px-5">
+      <div id="proj-content-${i}" class="accordion-content px-5">
+        
+        <!-- Bouton CTA pour ouvrir le carrousel pop-up si le projet a des images -->
+        ${p.images && p.images.length > 0 ? `
+          <div class="mb-6 pt-2">
+            <button onclick="openCarouselModal(${i})" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-surface2 hover:bg-accent hover:text-bg text-ink border border-edge rounded-lg px-4 py-3 font-mono text-xs transition-colors shadow-sm group">
+              <svg class="w-4 h-4 text-accent group-hover:text-bg transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>▶ Voir galerie (${p.images.length} image${p.images.length > 1 ? 's' : ''})</span>
+            </button>
+          </div>
+        ` : ''}
+
         <ul class="pb-5 space-y-2 text-sm text-muted list-disc list-inside">
           ${p.bullets.map(b => `<li>${b}</li>`).join('')}
         </ul>
@@ -754,9 +844,131 @@
     btn.addEventListener('click', () => {
       const content = btn.nextElementSibling;
       const chevron = btn.querySelector('.chevron');
-      content.classList.toggle('open');
+      const isOpen = content.classList.toggle('open');
       chevron.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
     });
+  });
+
+  // ---------- Gestion Pop-up Carrousel ----------
+  let currentModalProjectIndex = null;
+  let currentModalSlideIndex = 0;
+
+  function openCarouselModal(projectIndex) {
+    const proj = projects[projectIndex];
+    if (!proj || !proj.images || proj.images.length === 0) return;
+
+    currentModalProjectIndex = projectIndex;
+    currentModalSlideIndex = 0;
+
+    // Titre
+    document.getElementById('modalProjectTitle').textContent = `// ${proj.title}`;
+
+    // Injection des slides (Correction : opacity-100 au lieu de opacity-150)
+    const container = document.getElementById('modalSlidesContainer');
+    container.innerHTML = proj.images.map((img, idx) => `
+      <div class="modal-slide absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 ${idx === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}" data-modal-slide="${idx}">
+        <img src="${img}" alt="${proj.title}" class="max-h-full max-w-full object-contain rounded border border-edge shadow-lg">
+      </div>
+    `).join('');
+
+    // Gestion de l'affichage des flèches et points s'il y a plusieurs images
+    const prevBtn = document.getElementById('modalPrevBtn');
+    const nextBtn = document.getElementById('modalNextBtn');
+    const dotsContainer = document.getElementById('modalDotsContainer');
+
+    if (proj.images.length > 1) {
+      prevBtn.style.display = 'block';
+      nextBtn.style.display = 'block';
+      dotsContainer.innerHTML = proj.images.map((_, idx) => `
+        <button onclick="setModalSlide(${idx})" class="w-2.5 h-2.5 rounded-full transition-all ${idx === 0 ? 'bg-accent w-5' : 'bg-edge'}" aria-label="Aller à l'image ${idx + 1}"></button>
+      `).join('');
+    } else {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+      dotsContainer.innerHTML = '';
+    }
+
+    updateModalState();
+
+    // Affichage modale
+    const modal = document.getElementById('carouselModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Empêche le scroll en arrière-plan
+  }
+
+  function closeCarouselModal() {
+    const modal = document.getElementById('carouselModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = ''; // Restaure le scroll initial
+    currentModalProjectIndex = null;
+    currentModalSlideIndex = 0;
+  }
+
+  function modalMoveSlide(direction) {
+    if (currentModalProjectIndex === null) return;
+    const proj = projects[currentModalProjectIndex];
+    if (!proj || !proj.images) return;
+
+    currentModalSlideIndex += direction;
+    if (currentModalSlideIndex < 0) {
+      currentModalSlideIndex = proj.images.length - 1;
+    } else if (currentModalSlideIndex >= proj.images.length) {
+      currentModalSlideIndex = 0;
+    }
+    updateModalState();
+  }
+
+  function setModalSlide(index) {
+    if (currentModalProjectIndex === null) return;
+    const proj = projects[currentModalProjectIndex];
+    if (!proj || !proj.images) return;
+
+    if (index >= 0 && index < proj.images.length) {
+      currentModalSlideIndex = index;
+      updateModalState();
+    }
+  }
+
+  function updateModalState() {
+    if (currentModalProjectIndex === null) return;
+    const proj = projects[currentModalProjectIndex];
+
+    // Slides
+    const slides = document.querySelectorAll('.modal-slide');
+    slides.forEach((slide, idx) => {
+      if (idx === currentModalSlideIndex) {
+        slide.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
+        slide.classList.add('opacity-100', 'z-10');
+      } else {
+        slide.classList.remove('opacity-100', 'z-10');
+        slide.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+      }
+    });
+
+    // Compteur
+    const counter = document.getElementById('modalCounter');
+    counter.textContent = `${currentModalSlideIndex + 1} / ${proj.images.length}`;
+
+    // Points indicateurs
+    const dotsContainer = document.getElementById('modalDotsContainer');
+    if (dotsContainer && proj.images.length > 1) {
+      const dots = dotsContainer.querySelectorAll('button');
+      dots.forEach((dot, idx) => {
+        if (idx === currentModalSlideIndex) {
+          dot.className = 'w-5 h-2.5 rounded-full transition-all bg-accent';
+        } else {
+          dot.className = 'w-2.5 h-2.5 rounded-full transition-all bg-edge';
+        }
+      });
+    }
+  }
+
+  // Fermer la modale avec la touche Echap (Escape)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeCarouselModal();
+    }
   });
 
   // ---------- Render experience (filterable) ----------
@@ -877,6 +1089,23 @@
   }
   document.addEventListener('scroll', onScroll);
   onScroll();
+
+  // ---------- Back to top button ----------
+  const backToTop = document.getElementById('backToTop');
+  function toggleBackToTop() {
+    if (window.scrollY > 500) {
+      backToTop.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+      backToTop.classList.add('opacity-100', 'translate-y-0');
+    } else {
+      backToTop.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+      backToTop.classList.remove('opacity-100', 'translate-y-0');
+    }
+  }
+  document.addEventListener('scroll', toggleBackToTop);
+  toggleBackToTop();
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   // ---------- Reveal on scroll ----------
   const io = new IntersectionObserver((entries) => {

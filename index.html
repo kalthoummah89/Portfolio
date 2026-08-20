@@ -38,6 +38,7 @@
           ok: '#5EEAD4',
           ink: '#EEF0F8',
           muted: '#9EA8C7',
+          mutedui: '#C3CBE6',
         },
         fontFamily: {
           mono: ['"Space Mono"', 'monospace'],
@@ -286,7 +287,7 @@
     }
 
     #hero .text-lg,
-    #hero .sm\\:text-xl {
+    #hero .sm\:text-xl {
       font-size: 1rem;
       line-height: 1.65;
     }
@@ -434,13 +435,14 @@
 <!-- Top bar -->
 <header class="fixed top-0 inset-x-0 z-40 border-b border-edge/60 backdrop-blur bg-bg/70">
   <div class="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-    <span class="font-mono text-sm tracking-wide text-muted">KM<span class="text-accent">.</span>AUTOMATION</span>
-    <button id="menuBtn" class="lg:hidden font-mono text-xs border border-edge rounded px-3 py-1.5 text-muted" aria-expanded="false" aria-controls="mobileMenu" aria-label="Ouvrir le menu de navigation">MENU</button>
-    <div class="hidden lg:flex items-center gap-6 font-mono text-xs text-muted">
+    <span class="font-mono text-sm tracking-wide text-mutedui">KM<span class="text-accent">.</span>AUTOMATION</span>
+    <button id="menuBtn" class="lg:hidden font-mono text-xs border border-edge rounded px-3 py-1.5 text-mutedui" aria-expanded="false" aria-controls="mobileMenu" aria-label="Ouvrir le menu de navigation">MENU</button>
+    <div class="hidden lg:flex items-center gap-6 font-mono text-xs text-mutedui">
       <a href="#profil" class="hover:text-ink transition-colors">PROFIL</a>
       <a href="#competences" class="hover:text-ink transition-colors">COMPÉTENCES</a>
       <a href="#projets" class="hover:text-ink transition-colors">PROJETS</a>
       <a href="#experiences" class="hover:text-ink transition-colors">EXPÉRIENCES</a>
+      <a href="#parcours" class="hover:text-ink transition-colors">ÉTUDES</a>
       <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="flex items-center gap-1.5 text-signal hover:text-white transition-colors border border-signal/40 hover:border-signal rounded px-3 py-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         CV (PDF)
@@ -448,12 +450,12 @@
       <a href="#contact" class="border border-accent text-accent hover:bg-accent hover:text-bg transition-colors rounded px-3 py-1.5">CONTACT</a>
     </div>
   </div>
-  <div id="mobileMenu" class="hidden lg:hidden flex flex-col gap-1 px-6 pb-4 font-mono text-xs text-muted">
+  <div id="mobileMenu" class="hidden lg:hidden flex flex-col gap-1 px-6 pb-4 font-mono text-xs text-mutedui">
     <a href="#profil" class="py-2 border-b border-edge/50">PROFIL</a>
     <a href="#competences" class="py-2 border-b border-edge/50">COMPÉTENCES</a>
     <a href="#projets" class="py-2 border-b border-edge/50">PROJETS</a>
     <a href="#experiences" class="py-2 border-b border-edge/50">EXPÉRIENCE</a>
-    <a href="#parcours" class="py-2 border-b border-edge/50">PARCOURS</a>
+    <a href="#parcours" class="py-2 border-b border-edge/50">ÉTUDES</a>
     <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="py-2 border-b border-edge/50 text-signal flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       TÉLÉCHARGER MON CV (PDF)
@@ -471,11 +473,11 @@
         <h1 class="text-4xl sm:text-6xl font-extrabold leading-[1.05] max-w-3xl">
           Kalthoum Mahjoub<span class="text-accent">.</span>
         </h1>
-        <p class="mt-4 text-lg sm:text-xl text-muted max-w-2xl">
+        <p class="mt-4 text-lg sm:text-xl text-mutedui max-w-2xl">
           Spécialiste en <span class="text-ink">automatisation IA & no-code</span>. Je conçois des workflows et agents intelligents qui fiabilisent la gestion commerciale et la relation client.
         </p>
 
-        <div class="mt-6 flex flex-wrap gap-3 font-mono text-xs text-muted">
+        <div class="mt-6 flex flex-wrap gap-3 font-mono text-xs text-mutedui">
           <span class="border border-edge rounded-full px-3 py-1">📍 Ariana, Tunisie</span>
         </div>
       </div>
@@ -498,34 +500,34 @@
     </div>
 
     <div class="mt-20 hidden sm:block">
-      <p class="font-mono text-[11px] text-muted mb-6">// WORKFLOW EN PRODUCTION — AGENT VOCAL IA (VAPI, GPT-4.1)</p>
+      <p class="font-mono text-[11px] text-mutedui mb-6">// WORKFLOW EN PRODUCTION — AGENT VOCAL IA (VAPI, GPT-4.1)</p>
       <div class="relative flow-line py-8">
         <div class="flow-dot"></div>
         <div class="relative flex justify-between text-center">
           <div class="node-pulse flex-1 px-1">
             <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
             <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Appel client</p>
-            <p class="text-[10px] text-muted">NLP</p>
+            <p class="text-[10px] text-mutedui">NLP</p>
           </div>
           <div class="node-pulse flex-1 px-1">
             <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
             <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Agent IA</p>
-            <p class="text-[10px] text-muted">anti-hallucination</p>
+            <p class="text-[10px] text-mutedui">anti-hallucination</p>
           </div>
           <div class="node-pulse flex-1 px-1">
             <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
             <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Webhook</p>
-            <p class="text-[10px] text-muted">Make</p>
+            <p class="text-[10px] text-mutedui">Make</p>
           </div>
           <div class="node-pulse flex-1 px-1">
             <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-accent"></div>
             <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Facture + stock</p>
-            <p class="text-[10px] text-muted">Data Store</p>
+            <p class="text-[10px] text-mutedui">Data Store</p>
           </div>
           <div class="node-pulse flex-1 px-1">
             <div class="mx-auto w-3 h-3 rounded-full bg-surface2 border-2 border-signal"></div>
             <p class="mt-3 text-[11px] sm:text-xs font-mono text-ink">Slack notifié</p>
-            <p class="text-[10px] text-signal">~0,36 $/appel</p>
+            <p class="text-[10px] text-signal">&lt; 0,36 $/appel</p>
           </div>
         </div>
       </div>
@@ -541,7 +543,7 @@
       <p class="text-xl sm:text-2xl leading-relaxed text-ink">
         Spécialisée dans l'automatisation de workflows intelligents dédiés à la gestion commerciale et à la relation client, mon parcours hybride en marketing, en gestion de projets et en développement web me sert de solide appui pour cerner les enjeux business, cadrer les besoins métier et les traduire en solutions techniques fiables et évolutives.
       </p>
-      <p class="mt-6 text-muted">
+      <p class="mt-6 text-mutedui">
         Objectif clair : optimiser la productivité des équipes et renforcer la satisfaction client.
       </p>
     </div>
@@ -555,10 +557,10 @@
       <p class="font-mono text-xs text-signal tracking-[0.2em]">02 — COMPÉTENCES</p>
       <div class="reveal w-full min-w-0">
         <div id="tabBar" class="flex flex-wrap gap-2.5 mb-8 font-mono text-xs">
-          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="nocode" aria-selected="true">Automation</button>
-          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="ia" aria-selected="false">Agentic IA / LLMs</button>
-          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="dev" aria-selected="false">Dev Web (MERN)</button>
-          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-muted hover:border-accent transition-colors" data-tab="pm" aria-selected="false">Gestion & Marketing</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-tab="nocode" aria-selected="true">Automation</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-tab="ia" aria-selected="false">Agentic IA / LLMs</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-tab="dev" aria-selected="false">Dev Web (MERN)</button>
+          <button class="tab-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-tab="pm" aria-selected="false">Gestion & Marketing</button>
         </div>
 
         <div id="tabPanels" class="w-full">
@@ -589,9 +591,9 @@
       <p class="font-mono text-xs text-signal tracking-[0.2em]">04 — EXPÉRIENCES</p>
       <div class="reveal">
         <div class="flex flex-wrap gap-2 mb-10 font-mono text-xs" id="expFilters">
-          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="all" aria-pressed="true">Tout</button>
-          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="dev" aria-pressed="false">Développement Web & Gestion de Projets</button>
-          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-muted" data-filter="marketing" aria-pressed="false">Marketing et Développement Commercial</button>
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="all" aria-pressed="true">Tout</button>
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="dev" aria-pressed="false">Développement Web & Gestion de Projets</button>
+          <button class="filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="marketing" aria-pressed="false">Marketing et Développement Commercial</button>
         </div>
         <div id="expList" class="space-y-8 border-l border-edge pl-8"></div>
       </div>
@@ -607,7 +609,7 @@
       <div class="reveal grid md:grid-cols-2 gap-12">
         <div>
           <h3 class="font-mono text-sm text-ink mb-5">CERTIFICATIONS</h3>
-          <ul class="space-y-4 text-sm text-muted">
+          <ul class="space-y-4 text-sm text-mutedui">
             <li><span class="text-ink">Make (Partners / Academy)</span> — du niveau 1 à 5, Expert · AI Agent Builder & AI Automation Explorer</li>
             <li><span class="text-ink">Dubai Future Foundation</span> — One Million Prompters</li>
             <li><span class="text-ink">Microsoft</span> — Préparer votre carrière dans l'IA générative · Améliorez votre productivité grâce à l'IA générative</li>
@@ -617,8 +619,8 @@
         </div>
         <div>
           <h3 class="font-mono text-sm text-ink mb-5">ÉDUCATION</h3>
-          <ul class="space-y-4 text-sm text-muted">
-            <li><span class="text-ink">Orange Digital Center, GIZ & TEK-UP University</span> — Développement Web Full-Stack <span class="text-muted">(2022)</span></li>
+          <ul class="space-y-4 text-sm text-mutedui">
+            <li><span class="text-ink">Orange Digital Center, GIZ & TEK-UP University</span> — Développement Web Full-Stack <span class="text-mutedui">(2022)</span></li>
             <li>
               <span class="text-ink">Faculté des sciences économiques et de gestion de Tunis (FSEGT)</span>
               <ul class="mt-2 ml-4 space-y-1 list-disc list-inside">
@@ -627,7 +629,7 @@
                 <li>Licence appliquée en Marketing (2011)</li>
               </ul>
             </li>
-            <li><span class="text-ink">Lycée Menzah VI</span> — Baccalauréat en informatique <span class="text-muted">(2008)</span></li>
+            <li><span class="text-ink">Lycée Menzah VI</span> — Baccalauréat en informatique <span class="text-mutedui">(2008)</span></li>
           </ul>
         </div>
       </div>
@@ -662,7 +664,7 @@
         </div>
 
         <!-- Coordonnées directes -->
-        <div class="mt-10 flex flex-wrap gap-6 font-mono text-xs text-muted">
+        <div class="mt-10 flex flex-wrap gap-6 font-mono text-xs text-mutedui">
           <button id="copyEmail" type="button" class="flex items-center gap-2 group" aria-label="Copier l’adresse e-mail">
             <span>Email :</span>
             <span class="text-ink border-b border-dashed border-edge group-hover:border-accent transition-colors">mahjoub.kalthoum@gmail.com</span>
@@ -683,7 +685,7 @@
 </section>
 
 <footer class="px-6 lg:px-10 py-8 border-t border-edge/60">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between gap-2 font-mono text-[11px] text-muted">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between gap-2 font-mono text-[11px] text-mutedui">
     <span>© Kalthoum Mahjoub</span>
     <span>Automatisation IA & No-Code — Ariana, Tunisie</span>
   </div>
@@ -702,7 +704,7 @@
   {
     "title": "Agent vocal IA (Vapi) de prise de commande",
     "tag": "Certification Make",
-    "metric": "~0,36 $/appel",
+    "metric": "< 0,36 $/appel",
     "images": [
       "assets/projet1.jpg"
     ],
@@ -787,7 +789,7 @@
   // ---------- Render skills ----------
   Object.entries(skills).forEach(([key, list]) => {
     const panel = document.querySelector(`[data-panel="${key}"]`);
-    panel.innerHTML = list.map(s => `<span class="font-mono text-xs border border-edge rounded-full px-3.5 py-2 text-muted hover:border-accent hover:text-ink transition-colors">${s}</span>`).join('');
+    panel.innerHTML = list.map(s => `<span class="font-mono text-xs border border-edge rounded-full px-3.5 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors">${s}</span>`).join('');
   });
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -812,7 +814,7 @@
         </div>
         <div class="flex items-center gap-4 shrink-0">
           <span class="hidden sm:inline font-mono text-xs text-ok border border-ok/30 rounded-full px-3 py-1">${p.metric}</span>
-          <svg class="chevron w-4 h-4 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          <svg class="chevron w-4 h-4 text-mutedui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </button>
       <div id="proj-content-${i}" class="accordion-content px-5">
@@ -827,7 +829,7 @@
           </div>
         ` : ''}
 
-        <ul class="pb-5 space-y-2 text-sm text-muted list-disc list-inside">
+        <ul class="pb-5 space-y-2 text-sm text-mutedui list-disc list-inside">
           ${p.bullets.map(b => `<li>${b}</li>`).join('')}
         </ul>
         <div class="stack-block">
@@ -982,9 +984,9 @@
     return `
       <div class="relative">
         <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full ${e.cat === 'dev' ? 'bg-accent' : 'bg-signal'}"></span>
-        <p class="font-mono text-[11px] text-muted mb-1">${e.date}</p>
-        <h3 class="text-ink font-semibold">${e.company} <span class="text-muted font-normal">— ${e.role}</span></h3>
-        <p class="mt-2 text-sm text-muted max-w-2xl">${e.desc}</p>
+        <p class="font-mono text-[11px] text-mutedui mb-1">${e.date}</p>
+        <h3 class="text-ink font-semibold">${e.company} <span class="text-mutedui font-normal">— ${e.role}</span></h3>
+        <p class="mt-2 text-sm text-mutedui max-w-2xl">${e.desc}</p>
       </div>
     `;
   }

@@ -36,6 +36,7 @@
           accent: '#8B7CF6',
           signal: '#F2A94E',
           ok: '#5EEAD4',
+          rose: '#FB7185',
           ink: '#EEF0F8',
           muted: '#9EA8C7',
           mutedui: '#C3CBE6',
@@ -106,6 +107,9 @@
   .filter-btn[aria-pressed="true"] {
     background: #8B7CF6; color: #0A0E17; border-color: #8B7CF6;
   }
+  .cert-filter-btn[aria-pressed="true"] {
+    background: #8B7CF6; color: #0A0E17; border-color: #8B7CF6;
+  }
   .accordion-content { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(0, 1, 0, 1); }
   .accordion-content.open { max-height: 4000px; transition: max-height 1s ease-in-out; }
   .chevron { transition: transform .3s ease; }
@@ -113,6 +117,55 @@
 
   .navdot { transition: background-color .3s ease, transform .3s ease; }
   .navdot.active { background-color: #8B7CF6; transform: scale(1.4); }
+
+  /* Fil conducteur "workflow" entre les sections Compétences → Certifications */
+  .wf-spine {
+    background-image: repeating-linear-gradient(to bottom, #262F4A 0 6px, transparent 6px 12px);
+  }
+  .wf-travel-dot {
+    background: #8B7CF6;
+    box-shadow: 0 0 12px 2px rgba(139,124,246,0.7);
+    animation: wfTravel 10s linear infinite;
+  }
+  @keyframes wfTravel {
+    0%   { top: 0%;   opacity: 0; }
+    4%   { opacity: 1; }
+    96%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wf-travel-dot { animation: none !important; opacity: .8; top: 0; }
+  }
+
+  /* Certification cards — badges de modules validés */
+  .cert-card {
+    position: relative;
+    isolation: isolate;
+    transition: transform .35s ease, border-color .35s ease, background-color .35s ease, box-shadow .35s ease;
+  }
+  .cert-card:hover, .cert-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -18px rgba(0,0,0,0.55);
+  }
+  .cert-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--cert-color, #8B7CF6), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none;
+  }
+  .cert-card:hover::after, .cert-card:focus-visible::after { opacity: 1; }
+  .cert-icon { transition: transform .35s ease, background-color .35s ease; }
+  .cert-card:hover .cert-icon { transform: rotate(-8deg) scale(1.08); }
+  .cert-arrow { transition: transform .3s ease, opacity .3s ease; opacity: 0; transform: translateX(-4px); }
+  .cert-card:hover .cert-arrow, .cert-card:focus-visible .cert-arrow { opacity: 1; transform: translateX(0); }
 
   @media (prefers-reduced-motion: reduce) {
     .flow-dot, .node-pulse { animation: none !important; }
@@ -163,7 +216,7 @@
       margin-bottom: 1.5rem;
     }
 
-    #profil, #competences, #projets, #experiences, #parcours {
+    #profil, #competences, #projets, #experiences, #etudes, #certifications {
       padding-top: 4rem;
       padding-bottom: 4rem;
     }
@@ -275,7 +328,7 @@
 
   @media (max-width: 420px) {
     #hero,
-    #profil, #competences, #projets, #experiences, #parcours, #contact {
+    #profil, #competences, #projets, #experiences, #etudes, #certifications, #contact {
       padding-left: 1rem;
       padding-right: 1rem;
     }
@@ -428,7 +481,8 @@
   <a href="#competences" data-target="competences" class="navdot w-2 h-2 rounded-full bg-edge"></a>
   <a href="#projets" data-target="projets" class="navdot w-2 h-2 rounded-full bg-edge"></a>
   <a href="#experiences" data-target="experiences" class="navdot w-2 h-2 rounded-full bg-edge"></a>
-  <a href="#parcours" data-target="parcours" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#etudes" data-target="etudes" class="navdot w-2 h-2 rounded-full bg-edge"></a>
+  <a href="#certifications" data-target="certifications" class="navdot w-2 h-2 rounded-full bg-edge"></a>
   <a href="#contact" data-target="contact" class="navdot w-2 h-2 rounded-full bg-edge"></a>
 </nav>
 
@@ -442,7 +496,16 @@
       <a href="#competences" class="hover:text-ink transition-colors">COMPÉTENCES</a>
       <a href="#projets" class="hover:text-ink transition-colors">PROJETS</a>
       <a href="#experiences" class="hover:text-ink transition-colors">EXPÉRIENCES</a>
-      <a href="#parcours" class="hover:text-ink transition-colors">ÉTUDES</a>
+      <div class="relative" id="parcoursDropdown">
+        <button id="parcoursBtn" type="button" class="flex items-center gap-1 hover:text-ink transition-colors" aria-haspopup="true" aria-expanded="false" aria-controls="parcoursMenu">
+          PARCOURS
+          <svg id="parcoursChevron" class="chevron w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="parcoursMenu" class="hidden absolute left-0 top-full mt-2 w-56 bg-surface border border-edge rounded-lg shadow-xl overflow-hidden py-1 z-50">
+          <a href="#etudes" class="block px-4 py-2.5 text-mutedui hover:text-ink hover:bg-surface2 transition-colors">Études</a>
+          <a href="#certifications" class="block px-4 py-2.5 text-mutedui hover:text-ink hover:bg-surface2 transition-colors">Certifications</a>
+        </div>
+      </div>
       <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="flex items-center gap-1.5 text-signal hover:text-white transition-colors border border-signal/40 hover:border-signal rounded px-3 py-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         CV (PDF)
@@ -455,7 +518,8 @@
     <a href="#competences" class="py-2 border-b border-edge/50">COMPÉTENCES</a>
     <a href="#projets" class="py-2 border-b border-edge/50">PROJETS</a>
     <a href="#experiences" class="py-2 border-b border-edge/50">EXPÉRIENCE</a>
-    <a href="#parcours" class="py-2 border-b border-edge/50">ÉTUDES</a>
+    <a href="#etudes" class="py-2 border-b border-edge/50">ÉTUDES</a>
+    <a href="#certifications" class="py-2 border-b border-edge/50">CERTIFICATIONS</a>
     <a href="Mahjoub_Kalthoum_CV_Automatisation_IA.pdf" download class="py-2 border-b border-edge/50 text-signal flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       TÉLÉCHARGER MON CV (PDF)
@@ -550,6 +614,20 @@
   </div>
 </section>
 
+<!-- Fil conducteur "workflow" reliant Compétences → Certifications (identité visuelle automatisation) -->
+<div class="relative">
+  <div class="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 h-full">
+      <div class="grid grid-cols-[160px_1fr] gap-8 h-full">
+        <div class="relative h-full">
+          <div class="wf-spine absolute top-0 bottom-0 left-[3px] w-px"></div>
+          <div class="wf-travel-dot absolute left-[3px] w-2 h-2 -ml-[3.5px] rounded-full"></div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
 <!-- COMPETENCES -->
 <section id="competences" class="px-6 lg:px-10 py-24 border-b border-edge/60 bg-surface/40">
   <div class="max-w-6xl mx-auto">
@@ -601,47 +679,83 @@
   </div>
 </section>
 
-<!-- PARCOURS -->
-<section id="parcours" class="px-6 lg:px-10 py-24 border-b border-edge/60">
+<!-- ÉTUDES -->
+<section id="etudes" class="px-6 lg:px-10 py-24 border-b border-edge/60">
   <div class="max-w-6xl mx-auto">
     <div class="grid lg:grid-cols-[160px_1fr] gap-8">
-      <p class="font-mono text-xs text-signal tracking-[0.2em]">05 — PARCOURS</p>
-      <div class="reveal grid md:grid-cols-2 gap-12">
-        <div>
-          <h3 class="font-mono text-sm text-ink mb-5">CERTIFICATIONS</h3>
-          <ul class="space-y-4 text-sm text-mutedui">
-            <li><span class="text-ink">Make (Partners / Academy)</span> — du niveau 1 à 5, Expert · AI Agent Builder & AI Automation Explorer</li>
-            <li><span class="text-ink">Dubai Future Foundation</span> — One Million Prompters</li>
-            <li><span class="text-ink">Microsoft</span> — Préparer votre carrière dans l'IA générative · Améliorez votre productivité grâce à l'IA générative</li>
-            <li><span class="text-ink">ESSEC Business School</span> — Négociation internationale et interculturelle</li>
-            <li><span class="text-ink">Google</span> — Foundations of UX Design, Build Wireframes and Low-Fidelity Prototypes, Start the UX Design Process, Fundamentals of Digital Marketing</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="font-mono text-sm text-ink mb-5">ÉDUCATION</h3>
-          <ul class="space-y-4 text-sm text-mutedui">
-            <li><span class="text-ink">Orange Digital Center, GIZ & TEK-UP University</span> — Développement Web Full-Stack <span class="text-mutedui">(2022)</span></li>
-            <li>
-              <span class="text-ink">Faculté des sciences économiques et de gestion de Tunis (FSEGT)</span>
-              <ul class="mt-2 ml-4 space-y-1 list-disc list-inside">
-                <li>Doctorat en Marketing (2015 – 2022) — parcours suspendu suite à une reconversion professionnelle</li>
-                <li>Mastère de recherche en Marketing (2015)</li>
-                <li>Licence appliquée en Marketing (2011)</li>
-              </ul>
-            </li>
-            <li><span class="text-ink">Lycée Menzah VI</span> — Baccalauréat en informatique <span class="text-mutedui">(2008)</span></li>
-          </ul>
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">05 — ÉTUDES</p>
+      <div class="reveal">
+        <p class="text-sm text-mutedui max-w-2xl mb-10">Un cursus académique riche et varié, articulé autour de deux piliers majeurs : l'informatique et le marketing.</p>
+        <div class="space-y-8 border-l border-edge pl-8">
+          <div class="relative">
+            <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent"></span>
+            <p class="font-mono text-[11px] text-mutedui mb-1">2022</p>
+            <h3 class="text-ink font-semibold">Orange Digital Center, GIZ & TEK-UP University</h3>
+            <p class="mt-2 text-sm text-mutedui max-w-2xl">Développement Web Full-Stack</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full bg-signal"></span>
+            <p class="font-mono text-[11px] text-mutedui mb-1">2015 – 2022</p>
+            <h3 class="text-ink font-semibold">Faculté des sciences économiques et de gestion de Tunis <span class="text-mutedui font-normal">(FSEGT)</span></h3>
+            <p class="mt-2 text-sm text-mutedui max-w-2xl">Doctorat en Marketing — parcours suspendu suite à une reconversion professionnelle</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full bg-signal"></span>
+            <p class="font-mono text-[11px] text-mutedui mb-1">2015</p>
+            <h3 class="text-ink font-semibold">Faculté des sciences économiques et de gestion de Tunis <span class="text-mutedui font-normal">(FSEGT)</span></h3>
+            <p class="mt-2 text-sm text-mutedui max-w-2xl">Mastère de recherche en Marketing</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full bg-signal"></span>
+            <p class="font-mono text-[11px] text-mutedui mb-1">2011</p>
+            <h3 class="text-ink font-semibold">Faculté des sciences économiques et de gestion de Tunis <span class="text-mutedui font-normal">(FSEGT)</span></h3>
+            <p class="mt-2 text-sm text-mutedui max-w-2xl">Licence appliquée en Marketing</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[38px] top-1.5 w-2.5 h-2.5 rounded-full bg-ok"></span>
+            <p class="font-mono text-[11px] text-mutedui mb-1">2008</p>
+            <h3 class="text-ink font-semibold">Lycée Menzah VI</h3>
+            <p class="mt-2 text-sm text-mutedui max-w-2xl">Baccalauréat en informatique</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="px-6 lg:px-10 py-24 border-b border-edge/60 bg-surface/40">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[160px_1fr] gap-8">
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">06 — CERTIFICATIONS</p>
+      <div class="reveal">
+        <p class="text-sm text-mutedui max-w-2xl mb-4">Des accréditations officielles attestant d'une parfaite synergie entre expertise technique, vision stratégique et exigences métier.</p>
+        <div id="certStats" class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-8 font-mono text-[11px] text-mutedui"></div>
+        <div id="certFilters" class="flex flex-wrap gap-2 mb-10 font-mono text-xs">
+          <button class="cert-filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="all" aria-pressed="true">Tout</button>
+          <button class="cert-filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="ia" aria-pressed="false">Automatisation No-Code & IA</button>
+          <button class="cert-filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="business" aria-pressed="false">Business Strategy</button>
+          <button class="cert-filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="ux" aria-pressed="false">UX/UI Design</button>
+          <button class="cert-filter-btn border border-edge rounded-full px-4 py-2 text-mutedui hover:border-accent hover:text-ink transition-colors" data-filter="marketing" aria-pressed="false">Marketing Digital</button>
+        </div>
+        <div id="certList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <div class="mt-8 flex justify-center">
+          <button id="certToggle" type="button" class="inline-flex items-center gap-2 border border-edge hover:border-accent rounded-full px-5 py-2.5 font-mono text-xs text-mutedui hover:text-ink transition-colors">
+            <span id="certToggleLabel">Voir plus</span>
+            <svg id="certToggleIcon" class="chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
 <!-- CONTACT -->
 <section id="contact" class="px-6 lg:px-10 py-28 border-b border-edge/60">
   <div class="max-w-6xl mx-auto">
     <div class="grid lg:grid-cols-[160px_1fr] gap-8">
-      <p class="font-mono text-xs text-signal tracking-[0.2em]">06 — CONTACT</p>
+      <p class="font-mono text-xs text-signal tracking-[0.2em]">07 — CONTACT</p>
       <div class="reveal">
         <h2 class="text-3xl sm:text-5xl font-extrabold max-w-2xl leading-tight mb-8">
           Discutons de votre prochain workflow.
@@ -785,6 +899,150 @@
     { cat:"marketing", company:"Mega Numérique", role:"Assistante Marketing (Stage)", date:"Juin 2013 – Septembre 2013", desc:"Déploiement d'actions de prospection ciblées, contribuant activement au développement du portefeuille clients et commercial (+10 % de prospects qualifiés)." },
     { cat:"marketing", company:"Tunisie Telecom", role:"Assistante Marketing (Stage)", date:"Mars 2011 – Avril 2011", desc:"Planification et conception d'un plan d'action promotionnel spécial fête des Mères destiné à l'ensemble des TT Shops à l'échelle nationale, sur une durée de 15 jours avec possibilité d'extension : diagnostic du point de vente pilote, définition des objectifs et de la cible, construction d'une offre packagée (téléphone + forfait), élaboration d'1 plan d'action complet, 4 supports de communication (PLV, presse, catalogue distributeur, e-mailing) et 3 outils d'aide à la vente (argumentaire, fiche-produit, FAQ) pour la force commerciale." }
   ];
+
+  // ---------- Certifications (cliquables → PDF) ----------
+  // NB : remplacez chaque "file" par le chemin réel de votre PDF (ex. certifications/make-niveau5.pdf)
+  // "verifyUrl" est optionnel : renseignez-le (lien Credly / Make Academy / Coursera-Google...) pour afficher le badge "Vérifié" + le lien externe de vérification.
+  const certifications = [
+    { cat:"ia", issuer:"Make (Partners / Academy)", title:"Certification Make — Niveau 5 Expert", file:"https://partnertraining.make.com/certificates/ojke9xmviw", verifyUrl:"" },
+    { cat:"ia", issuer:"Make (Partners / Academy)", title:"AI Agent Builder", file:"https://www.credly.com/badges/482dc001-d4df-4087-89a5-3ebc0de91569/public_url", verifyUrl:"" },
+    { cat:"ia", issuer:"Make (Partners / Academy)", title:"AI Automation Explorer", file:"https://www.credly.com/badges/7981e622-d3a2-479b-953b-a7b7dbcd64db/public_url", verifyUrl:"" },
+    { cat:"ia", issuer:"Dubai Future Foundation", title:"One Million Prompters", file:"https://omp.dub.ai/certificate/o9lhz8Rpc9kQ", verifyUrl:"" },
+    { cat:"ia", issuer:"Microsoft", title:"Préparer votre carrière dans l'IA générative", file:"CertificatDaccomplissement_Preparer votre carriere dans lIA generative par Microsoft et LinkedIn.pdf", verifyUrl:"" },
+    { cat:"ia", issuer:"Microsoft", title:"Améliorez votre productivité grâce à l'IA générative", file:"CertificatDaccomplissement_Ameliorez votre productivite grace a lIA generative avec Microsoft et LinkedIn.pdf", verifyUrl:"" },
+    { cat:"business", issuer:"ESSEC Business School", title:"Négociation internationale et interculturelle", file:"certifications/essec-negociation-internationale.pdf", verifyUrl:"" },
+    { cat:"ux", issuer:"Google", title:"Foundations of UX Design", file:"https://coursera.org/share/d0e4acf12184e9ed34ee18289b0e0f82", verifyUrl:"" },
+    { cat:"ux", issuer:"Google", title:"Build Wireframes and Low-Fidelity Prototypes", file:"https://coursera.org/share/4b277dd2c7d7f4b6bd2baea688c3e5f3", verifyUrl:"" },
+    { cat:"ux", issuer:"Google", title:"Start the UX Design Process", file:"https://www.coursera.org/account/accomplishments/verify/7AR2J7SW3PHY", verifyUrl:"" },
+    { cat:"marketing", issuer:"Google", title:"Fundamentals of Digital Marketing", file:"https://skillshop.exceedlms.com/student/award/LRNC49uWp6zLFLXtmKsNRXgN", verifyUrl:"" }
+  ];
+
+  const certTheme = {
+    ia:        { color:"#8B7CF6", text:"text-accent", border:"hover:border-accent/70", ring:"border-accent/30" },
+    business:  { color:"#F2A94E", text:"text-signal", border:"hover:border-signal/70", ring:"border-signal/30" },
+    ux:        { color:"#5EEAD4", text:"text-ok",     border:"hover:border-ok/70",     ring:"border-ok/30" },
+    marketing: { color:"#FB7185", text:"text-rose",   border:"hover:border-rose/70",   ring:"border-rose/30" }
+  };
+
+  // ---------- Récapitulatif chiffré des certifications (calculé automatiquement) ----------
+  const certStatsEl = document.getElementById('certStats');
+  if (certStatsEl) {
+    const domainCount = new Set(certifications.map(c => c.cat)).size;
+    certStatsEl.innerHTML = `
+      <span class="text-ink font-semibold">${certifications.length}</span>
+      <span>certification${certifications.length > 1 ? 's' : ''}</span>
+      <span class="text-edge">·</span>
+      <span class="text-ink font-semibold">${domainCount}</span>
+      <span>domaines de compétences</span>
+    `;
+  }
+
+  // ---------- Render certifications (filtre par catégorie + pagination "Voir plus / Voir moins" par lots de 3) ----------
+  const CERT_PAGE_SIZE = 3;
+  let certVisibleCount = CERT_PAGE_SIZE;
+  let certFilter = 'all';
+
+  const certList = document.getElementById('certList');
+  const certToggle = document.getElementById('certToggle');
+  const certToggleLabel = document.getElementById('certToggleLabel');
+  const certToggleIcon = document.getElementById('certToggleIcon');
+
+  function certCardHtml(c) {
+    const t = certTheme[c.cat];
+    const verified = !!c.verifyUrl;
+    return `
+      <div class="cert-card group relative flex flex-col justify-between border border-edge ${t.border} rounded-xl bg-surface/60 p-5 overflow-hidden cursor-pointer" style="--cert-color:${t.color}">
+        <div class="flex items-start justify-between mb-6 gap-2">
+          <span class="cert-icon w-10 h-10 rounded-lg flex items-center justify-center border ${t.ring} bg-surface2 shrink-0">
+            <svg class="w-5 h-5 ${t.text}" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </span>
+          <div class="flex items-center gap-1.5 flex-wrap justify-end">
+            ${verified ? `
+            <span class="font-mono text-[9px] tracking-widest ${t.text} border ${t.ring} rounded-full px-2 py-1 flex items-center gap-1 shrink-0">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Vérifié
+            </span>` : ''}
+            <span class="font-mono text-[9px] tracking-widest text-mutedui border border-edge rounded-full px-2 py-1 flex items-center gap-1 shrink-0">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h1m5 12H8a2 2 0 01-2-2V6a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414A1 1 0 0119 9.414V18a2 2 0 01-2 2z"/></svg>
+              PDF
+            </span>
+          </div>
+        </div>
+        <div>
+          <p class="font-mono text-[10px] tracking-wide ${t.text} mb-1.5">${c.issuer}</p>
+          <h3 class="text-ink font-semibold text-sm leading-snug">${c.title}</h3>
+        </div>
+        <div class="mt-5 flex items-center justify-between gap-3">
+          <a href="${c.file}" target="_blank" rel="noopener"
+             class="after:content-[''] after:absolute after:inset-0 after:z-0 inline-flex items-center gap-1.5 font-mono text-[11px] text-mutedui group-hover:text-ink transition-colors">
+            <span class="sr-only">${c.title}, délivré par ${c.issuer} — </span>
+            <span>Voir le certificat</span>
+            <svg class="cert-arrow w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <span class="sr-only"> (s'ouvre dans un nouvel onglet, format PDF)</span>
+          </a>
+          ${verified ? `
+          <a href="${c.verifyUrl}" target="_blank" rel="noopener"
+             class="relative z-10 font-mono text-[10px] ${t.text} hover:text-ink underline decoration-dotted underline-offset-4 transition-colors flex items-center gap-1 shrink-0">
+            Vérifier
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            <span class="sr-only"> sur la plateforme de certification (s'ouvre dans un nouvel onglet)</span>
+          </a>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function getFilteredCerts() {
+    return certFilter === 'all' ? certifications : certifications.filter(c => c.cat === certFilter);
+  }
+
+  function renderCertList() {
+    if (!certList) return;
+    const filtered = getFilteredCerts();
+
+    if (filtered.length === 0) {
+      certList.innerHTML = `<p class="col-span-full text-sm text-mutedui">Aucune certification dans cette catégorie pour le moment.</p>`;
+    } else {
+      certList.innerHTML = filtered.slice(0, certVisibleCount).map(certCardHtml).join('');
+    }
+
+    if (!certToggle) return;
+    if (filtered.length <= CERT_PAGE_SIZE) {
+      certToggle.classList.add('hidden');
+      return;
+    }
+    certToggle.classList.remove('hidden');
+    const allShown = certVisibleCount >= filtered.length;
+    certToggleLabel.textContent = allShown ? 'Voir moins' : `Voir plus (+${filtered.length - certVisibleCount})`;
+    certToggleIcon.classList.toggle('open', allShown);
+  }
+
+  renderCertList();
+
+  if (certToggle) {
+    certToggle.addEventListener('click', () => {
+      const filtered = getFilteredCerts();
+      const allShown = certVisibleCount >= filtered.length;
+      if (allShown) {
+        certVisibleCount = CERT_PAGE_SIZE;
+        document.getElementById('certifications').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        certVisibleCount = Math.min(certVisibleCount + CERT_PAGE_SIZE, filtered.length);
+      }
+      renderCertList();
+    });
+  }
+
+  document.querySelectorAll('.cert-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cert-filter-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      certFilter = btn.dataset.filter;
+      certVisibleCount = CERT_PAGE_SIZE;
+      renderCertList();
+    });
+  });
 
   // ---------- Render skills ----------
   Object.entries(skills).forEach(([key, list]) => {
@@ -1036,6 +1294,41 @@
     menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
   }));
 
+  // ---------- Dropdown desktop "PARCOURS" (Études + Certifications) ----------
+  const parcoursBtn = document.getElementById('parcoursBtn');
+  const parcoursMenu = document.getElementById('parcoursMenu');
+  const parcoursChevron = document.getElementById('parcoursChevron');
+  const parcoursDropdown = document.getElementById('parcoursDropdown');
+
+  function closeParcoursMenu() {
+    parcoursMenu.classList.add('hidden');
+    parcoursBtn.setAttribute('aria-expanded', 'false');
+    parcoursChevron.classList.remove('open');
+  }
+
+  if (parcoursBtn && parcoursMenu) {
+    parcoursBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !parcoursMenu.classList.contains('hidden');
+      if (isOpen) {
+        closeParcoursMenu();
+      } else {
+        parcoursMenu.classList.remove('hidden');
+        parcoursBtn.setAttribute('aria-expanded', 'true');
+        parcoursChevron.classList.add('open');
+      }
+    });
+
+    parcoursMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeParcoursMenu));
+
+    document.addEventListener('click', (e) => {
+      if (!parcoursDropdown.contains(e.target)) closeParcoursMenu();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeParcoursMenu();
+    });
+  }
+
   // ---------- Copy email ----------
   const copyBtn = document.getElementById('copyEmail');
   const copyStatus = document.getElementById('copyStatus');
@@ -1075,7 +1368,7 @@
 
   // ---------- Scroll progress + active nav dot ----------
   const scrollbar = document.getElementById('scrollbar');
-  const sections = ['hero','profil','competences','projets','experiences','parcours','contact'].map(id => document.getElementById(id));
+  const sections = ['hero','profil','competences','projets','experiences','etudes','certifications','contact'].map(id => document.getElementById(id));
   const dots = document.querySelectorAll('.navdot');
 
   function onScroll() {

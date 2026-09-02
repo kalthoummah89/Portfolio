@@ -814,24 +814,24 @@
     pm: ["Analyse Technique","Étude de marché","Analyse SWOT et concurrentielle","Benchmark digital","Stratégie et planification marketing","Business Model Canvas","Rédaction de cahier des charges fonctionnel (CdCF)","Modélisation UML","Planification stratégique","Gestion de la relation client (CRM)"]
   };
 
- const projects = [
-   {
-  "title": "Pipeline IA de traitement des retours clients",
-  "tag": "n8n & Groq",
-  "metric": "Coût optimisé (LLM open-source)",
-  "images": [
-    "assets/projet6.jpg"
-  ],
-  "videos": [],
-  "stack": ["n8n", "Groq", "LLM Chains", "Structured Output Parser", "HTTP Request API", "Data Table"],
-  "bullets": [
-    "Orchestration de Chains LLM pour l'analyse, la classification et le traitement des feedbacks clients (coûts et délais réduits).",
-    "Intégration d'API avec authentification, envoi/réception de données avec un mécanisme de retry garantissant la fiabilité du workflow",
-    "Journalisation anti-doublons des feedbacks dans une Data Table pour le suivi"
-  ]
-},
+  const projects = [
   {
-    "title": "Agent vocal IA (Vapi) de prise de commande",
+    "title": "🤖⚡ Pipeline IA de traitement des retours clients",
+    "tag": "n8n & Groq",
+    "metric": "Coût optimisé (LLM open-source)",
+    "images": [
+      "assets/projet6.jpg"
+    ],
+    "videos": [],
+    "stack": ["n8n", "Groq", "LLM Chains", "Structured Output Parser", "HTTP Request API", "Data Table"],
+    "bullets": [
+      "Orchestration de Chains LLM pour l'analyse, la classification et le traitement des feedbacks clients (coûts et délais réduits).",
+      "Intégration d'API avec authentification, envoi/réception de données avec un mécanisme de retry garantissant la fiabilité du workflow.",
+      "Journalisation anti-doublons des feedbacks dans une Data Table pour le suivi."
+    ]
+  },
+  {
+    "title": "📞🤖 Agent vocal IA (Vapi) de prise de commande",
     "tag": "Make & Vapi",
     "metric": "< 0,36 $/appel",
     "images": [
@@ -842,15 +842,30 @@
     "bullets": [
       "Agent vocal intelligent capable de comprendre le langage naturel, de vérifier la disponibilité des produits, de prendre des commandes en temps réel et de les transférer au back-office sans intervention humaine.",
       "Stockage des commandes dans la base de données, génération automatique de factures à partir d'un template, mise à jour instantanée des stocks et alerte en direct de l'équipe commerciale sur Slack dès qu'une vente est réalisée.",
-      "Bénéfices : Service client disponible 24/24, zéro erreur de saisie, coûts d'assistance réduits et gain de temps commercial"
+      "Bénéfices : Service client disponible 24/24, zéro erreur de saisie, coûts d'assistance réduits et gain de temps commercial."
     ]
   },
   {
-    "title": "Système de Recouvrement Client Automatisé",
+    "title": "🤖 Agent IA de Support Client",
+    "tag": "n8n, Groq (openai/gpt-oss-safeguard)",
+    "metric": "Traitement en temps réel",
+    "images": [
+      "assets/projet7.jpg"
+    ],
+    "videos": [],
+    "stack": ["n8n", "Groq", "openai/gpt-oss-safeguard", "LangChain", "Tool Calling / HTTP Tools", "Webhooks", "Buffer Window Memory"],
+    "bullets": [
+      "Orchestration d'un agent IA autonome avec n8n et LangChain capable de traiter les requêtes clients en temps réel.",
+      "Implémentation du Tool Calling dynamique via des outils HTTP Request interrogeant des API backend.",
+      "Sécurisation et Guardrails stricts : protection anti-prompt injection, respect de la confidentialité des données et gestion d'une mémoire conversationnelle (Buffer Window Memory)."
+    ]
+  },
+  {
+    "title": "💶⚡ Système de Recouvrement Client Automatisé",
     "tag": "Make & CRM Airtable",
     "metric": "< 40 crédits/exécution",
     "images": [
-       "assets/projet2.png"
+      "assets/projet2.png"
     ],
     "videos": [],
     "stack": ["Make.com", "Airtable", "Gmail", "Webhooks", "Routage", "Logique conditionnelle", "HTML/CSS", "Aggregators"],
@@ -861,11 +876,11 @@
     ]
   },
   {
-    "title": "Restructuration et normalisation dynamique de données scolaires",
+    "title": "🎓🔄 Restructuration et normalisation dynamique de données scolaires",
     "tag": "Certification Make — Niveau 5 Expert",
     "metric": "< 50 crédits/exécution",
     "images": [
-     "assets/projet3.jpg"
+      "assets/projet3.jpg"
     ],
     "videos": [],
     "stack": ["Make.com", "Intégration API REST", "Automatisations Avancées", "Gmail", "HTML/CSS"],
@@ -876,11 +891,11 @@
     ]
   },
   {
-    "title": "Automatisation du Reporting Météo & Résilience des Flux de Données",
+    "title": "🌦️🔄 Automatisation du Reporting Météo & Résilience des Flux de Données",
     "tag": "Certification Make — Niveau 4 Advanced",
     "metric": "< 30 crédits/exécution",
     "images": [
-    "assets/projet4.jpg"
+      "assets/projet4.jpg"
     ],
     "videos": [],
     "stack": ["Make.com", "API REST", "Gestion d'erreurs avancée", "JSON", "Gmail"],
@@ -891,10 +906,12 @@
     ]
   },
   {
-    "title": "Campagnes d'E-mailing Automatisées & Fidélisation Client",
+    "title": "📩⚡ Campagnes d'E-mailing Automatisées & Fidélisation Client",
     "tag": "Marketing Automation · Make",
     "metric": "< 40 crédits/exécution",
-    "images": ["assets/projet5.jpg"],
+    "images": [
+      "assets/projet5.jpg"
+    ],
     "videos": [],
     "stack": ["Gmail", "Airtable", "Webhooks", "Tailwind CSS", "JavaScript"],
     "bullets": [
@@ -904,6 +921,7 @@
     ]
   }
 ];
+
   const experiences = [
     { cat:"dev", company:"TotalEnergies", role:"Initiative Entrepreneuriale (Entrepreneuriat)", date:"Juin 2024 – Octobre 2024", desc:"Étude de projet et développement MVP d'une application « Mindy Up », de gestion de la santé mentale en stack MERN, classée parmi les TOP 100 des meilleurs projets en Tunisie au Challenge Startupper de l'Année, organisé par TotalEnergies." },
     { cat:"dev", company:"Clediss", role:"Développeuse Web (Stage)", date:"Février 2023 – Mai 2023", desc:"Benchmark fonctionnel (3 solutions concurrentes) et conception d'une application de gestion de caisse enregistreuse pour restaurants avec la pile MERN (design validé à 97%, développement partiel)." },

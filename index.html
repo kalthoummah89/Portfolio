@@ -489,7 +489,9 @@
 <!-- Top bar -->
 <header class="fixed top-0 inset-x-0 z-40 border-b border-edge/60 backdrop-blur bg-bg/70">
   <div class="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-    <span class="font-mono text-sm tracking-wide text-mutedui">KM<span class="text-accent">.</span>AUTOMATION</span>
+    <a href="/" class="cursor-pointer inline-block no-underline">
+  <span class="font-mono text-sm tracking-wide text-mutedui">KM<span class="text-accent">.</span>AUTOMATION</span>
+</a>
     <button id="menuBtn" class="lg:hidden font-mono text-xs border border-edge rounded px-3 py-1.5 text-mutedui" aria-expanded="false" aria-controls="mobileMenu" aria-label="Ouvrir le menu de navigation">MENU</button>
     <div class="hidden lg:flex items-center gap-6 font-mono text-xs text-mutedui">
       <a href="#profil" class="hover:text-ink transition-colors">PROFIL</a>
@@ -823,7 +825,7 @@
       "assets/projet6.jpg"
     ],
     "videos": [],
-    "stack": ["n8n", "Groq", "LLM Chains", "Structured Output Parser", "HTTP Request API", "Data Table"],
+    "stack": ["n8n", "Groq", "LLM Chains", "Structured Output Parser", "HTTP Request", "Data Table"],
     "bullets": [
       "Orchestration de Chains LLM pour l'analyse, la classification et le traitement des feedbacks clients (coûts et délais réduits).",
       "Intégration d'API avec authentification, envoi/réception de données avec un mécanisme de retry garantissant la fiabilité du workflow.",
